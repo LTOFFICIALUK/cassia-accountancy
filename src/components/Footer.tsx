@@ -6,12 +6,12 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-sage text-cream">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <footer className="border-t border-sage/10 bg-white py-12 sm:py-14">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <Logo variant="footer" />
-            <p className="mt-3 text-sm leading-relaxed text-cream/80">
+            <Logo variant="header" />
+            <p className="mt-4 text-sm leading-relaxed text-charcoal-light">
               Helping small business owners stay organised, compliant and ready
               for Making Tax Digital.
             </p>
@@ -26,7 +26,7 @@ export const Footer = () => {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-cream/80 transition-colors hover:text-gold"
+                    className="text-sm text-charcoal transition-colors hover:text-sage"
                   >
                     {link.label}
                   </Link>
@@ -39,11 +39,11 @@ export const Footer = () => {
             <p className="text-sm font-semibold uppercase tracking-wider text-gold">
               Get in Touch
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-cream/80">
+            <ul className="mt-4 space-y-2 text-sm text-charcoal">
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="transition-colors hover:text-gold"
+                  className="transition-colors hover:text-sage"
                 >
                   {CONTACT_EMAIL}
                 </a>
@@ -51,7 +51,7 @@ export const Footer = () => {
               <li>
                 <a
                   href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-gold"
+                  className="transition-colors hover:text-sage"
                 >
                   {CONTACT_PHONE}
                 </a>
@@ -60,7 +60,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-cream/20 pt-6 text-center text-xs text-cream/60">
+        <div className="mt-10 border-t border-sage/10 pt-6 text-center text-xs text-charcoal-light">
           <p>
             &copy; {currentYear} {SITE_NAME}. All rights reserved.
           </p>

@@ -14,7 +14,7 @@ export const CTASection = ({
   buttonHref = "/contact",
 }: CTASectionProps) => {
   return (
-    <section className="bg-sage py-16 sm:py-20">
+    <section className="border-b border-sage/10 bg-sage py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <h2 className="font-heading text-3xl font-semibold text-cream sm:text-4xl">
           {title}
