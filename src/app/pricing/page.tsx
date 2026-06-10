@@ -1,103 +1,97 @@
 import type { Metadata } from "next";
-import { CTASection } from "@/components/CTASection";
+import { CheckList } from "@/components/CheckList";
+import { ContactForm } from "@/components/ContactForm";
 import { Hero } from "@/components/Hero";
-import { PricingCard } from "@/components/PricingCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Get a Quote",
   description:
-    "Transparent, fixed-fee accountancy packages for sole traders, growing businesses and limited companies.",
+    "Request a personalised, fixed-fee quote for bookkeeping, tax returns and Making Tax Digital support tailored to your business.",
 };
+
+const QUOTE_INCLUDES = [
+  "Clear, jargon-free communication",
+  "Cloud accounting software support",
+  "Proactive deadline reminders",
+  "Dedicated point of contact",
+  "Flexible meeting options",
+  "No hidden fees",
+] as const;
 
 const PricingPage = () => {
   return (
     <>
       <Hero
-        headline="Simple, Transparent Pricing"
-        subheading="Fixed-fee packages designed for small businesses — no surprises, no jargon."
-        ctaText="Book a Free Discovery Call"
-        ctaHref="/contact"
+        headline="Request a Personalised Quote"
+        subheading="Every business is different. Tell us what you need and we'll put together a fixed-fee quote with no surprises."
+        ctaText="Request a Quote"
+        ctaHref="#quote-form"
         imageSrc="/images/pricing-hero.jpg"
         compact
       />
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            title="Choose Your Package"
-            subtitle="All packages include friendly, jargon-free support. Contact us for a tailored quote based on your specific needs."
-          />
-          <div className="mt-12 grid gap-8 lg:grid-cols-3">
-            <PricingCard
-              title="Sole Trader Essentials"
-              price="From £XX/month"
-              features={[
-                "Bookkeeping",
-                "Tax return",
-                "Email support",
-              ]}
-            />
-            <PricingCard
-              title="Growth Package"
-              price="From £XX/month"
-              features={[
-                "Bookkeeping",
-                "MTD support",
-                "Quarterly reviews",
-                "Tax planning",
-              ]}
-              highlighted
-            />
-            <PricingCard
-              title="Limited Company Package"
-              price="From £XX/month"
-              features={[
-                "Accounts",
-                "Corporation tax",
-                "Director support",
-                "Ongoing advice",
-              ]}
-            />
-          </div>
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+            <div>
+              <SectionHeading
+                title="Fixed-Fee Support, Tailored to You"
+                subtitle="Whether you're a sole trader, freelancer or limited company, we'll recommend the right level of support and send you a clear, no-obligation quote."
+                centered={false}
+              />
 
-          <p className="mt-10 text-center text-sm text-charcoal-light">
-            Prices are indicative and depend on the complexity of your business.
-            Book a free discovery call for a personalised quote.
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <SectionHeading title="What's Included in Every Package" />
-          <div className="mt-8 grid gap-4 text-left sm:grid-cols-2">
-            {[
-              "Clear, jargon-free communication",
-              "Cloud accounting software support",
-              "Proactive deadline reminders",
-              "Dedicated point of contact",
-              "Flexible meeting options",
-              "No hidden fees",
-            ].map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-3 rounded-lg border border-sage/10 bg-cream px-4 py-3"
-              >
-                <span className="text-gold" aria-hidden="true">
-                  ✓
-                </span>
-                <span className="text-sm text-charcoal">{item}</span>
+              <div className="mt-8 rounded-xl border border-sage/10 bg-white p-6 shadow-sm">
+                <h3 className="font-heading text-lg font-semibold text-sage">
+                  What&apos;s Included
+                </h3>
+                <div className="mt-4">
+                  <CheckList items={QUOTE_INCLUDES} />
+                </div>
               </div>
-            ))}
+
+              <div className="mt-8 space-y-4 text-sm text-charcoal-light">
+                <p>
+                  Not sure exactly what you need? That&apos;s fine — tell us
+                  about your business and we&apos;ll guide you through the
+                  options.
+                </p>
+                <p>
+                  Prefer to talk first? Email{" "}
+                  <a
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    className="font-medium text-sage transition-colors hover:text-gold"
+                  >
+                    {CONTACT_EMAIL}
+                  </a>{" "}
+                  or call{" "}
+                  <a
+                    href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}
+                    className="font-medium text-sage transition-colors hover:text-gold"
+                  >
+                    {CONTACT_PHONE}
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div id="quote-form">
+              <h2 className="font-heading text-2xl font-semibold text-sage">
+                Request Your Quote
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-charcoal-light">
+                Fill in the form below and we&apos;ll be in touch with a
+                personalised quote, usually within one working day.
+              </p>
+              <div className="mt-6">
+                <ContactForm variant="quote" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      <CTASection
-        title="Get a personalised quote"
-        description="Every business is different. Let's discuss your needs and find the right package for you."
-      />
     </>
   );
 };

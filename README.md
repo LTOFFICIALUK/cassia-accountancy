@@ -26,7 +26,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | About | `/about` |
 | Services | `/services` |
 | Making Tax Digital | `/making-tax-digital` |
-| Pricing | `/pricing` |
+| Get a Quote | `/pricing` |
 | Resources / Blog | `/blog` |
 | Contact | `/contact` |
 

@@ -10,7 +10,7 @@ export const NAV_LINKS = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/making-tax-digital", label: "Making Tax Digital" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/pricing", label: "Get a Quote" },
   { href: "/blog", label: "Resources" },
   { href: "/contact", label: "Contact" },
 ] as const;
