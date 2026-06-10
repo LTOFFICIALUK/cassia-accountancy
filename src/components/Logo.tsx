@@ -15,11 +15,11 @@ export const Logo = ({
 }: LogoProps) => {
   const sizeClass =
     className ||
-    (variant === "header" ? "h-8 w-auto sm:h-9" : "h-10 w-auto sm:h-11");
+    (variant === "header" ? "h-10 w-auto sm:h-11" : "h-11 w-auto sm:h-12");
 
   const image = (
     <Image
-      src="/logo.png"
+      src={variant === "footer" ? "/logo-light.png" : "/logo.png"}
       alt={SITE_NAME}
       width={867}
       height={455}
@@ -28,17 +28,8 @@ export const Logo = ({
     />
   );
 
-  const content =
-    variant === "header" ? (
-      <span className="inline-flex items-center rounded-md bg-sage px-3 py-1.5 sm:px-3.5 sm:py-2">
-        {image}
-      </span>
-    ) : (
-      image
-    );
-
   if (!linked) {
-    return <span className="inline-flex shrink-0 items-center">{content}</span>;
+    return <span className="inline-flex shrink-0 items-center">{image}</span>;
   }
 
   return (
@@ -47,7 +38,7 @@ export const Logo = ({
       aria-label={`${SITE_NAME} home`}
       className="inline-flex shrink-0 items-center transition-opacity hover:opacity-90"
     >
-      {content}
+      {image}
     </Link>
   );
 };
