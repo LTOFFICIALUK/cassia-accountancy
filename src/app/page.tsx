@@ -37,7 +37,7 @@ const HomePage = () => {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="https://images.unsplash.com/photo-1521737711862-e3b97375f902?w=800&h=600&fit=crop"
+                src="/images/home-intro.jpg"
                 alt="Small business team collaborating in a modern office"
                 fill
                 className="object-cover"
@@ -82,7 +82,7 @@ const HomePage = () => {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=600&fit=crop"
+                src="/images/home-why-us.jpg"
                 alt="Professional consultant providing friendly advice"
                 fill
                 className="object-cover"

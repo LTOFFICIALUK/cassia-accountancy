@@ -17,7 +17,7 @@ const ContactPage = () => {
         headline="Let's Talk"
         subheading="Whether you're starting a business, struggling with bookkeeping or preparing for Making Tax Digital, we're here to help."
         ctaText=""
-        imageSrc="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&h=800&fit=crop"
+        imageSrc="/images/contact-hero.jpg"
         compact
       />
 

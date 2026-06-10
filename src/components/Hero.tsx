@@ -15,7 +15,7 @@ export const Hero = ({
   subheading,
   ctaText = "Book a Free Discovery Call",
   ctaHref = "/contact",
-  imageSrc = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&h=800&fit=crop",
+  imageSrc = "/images/hero-default.jpg",
   compact = false,
 }: HeroProps) => {
   return (

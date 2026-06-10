@@ -33,7 +33,7 @@ const MakingTaxDigitalPage = () => {
         subheading="Expert support to help your business navigate digital tax reporting with confidence."
         ctaText="Book a Free MTD Consultation"
         ctaHref="/contact"
-        imageSrc="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop"
+        imageSrc="/images/mtd-hero.jpg"
         compact
       />
 
@@ -59,7 +59,7 @@ const MakingTaxDigitalPage = () => {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
+                src="/images/mtd-content.jpg"
                 alt="Business owner reviewing digital tax records on a laptop"
                 fill
                 className="object-cover"

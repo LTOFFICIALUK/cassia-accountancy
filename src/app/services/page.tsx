@@ -46,7 +46,7 @@ const ServicesPage = () => {
         subheading="Practical, straightforward support tailored to sole traders, freelancers and growing businesses."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&fit=crop"
+        imageSrc="/images/services-hero.jpg"
         compact
       />
 

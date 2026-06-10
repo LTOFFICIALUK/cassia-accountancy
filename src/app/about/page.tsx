@@ -20,7 +20,7 @@ const AboutPage = () => {
         subheading="An AAT-qualified accountant with a passion for helping small business owners feel more confident about their finances."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&h=800&fit=crop"
+        imageSrc="/images/about-hero.jpg"
         compact
       />
 
@@ -29,7 +29,7 @@ const AboutPage = () => {
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div className="relative aspect-[3/4] max-w-md overflow-hidden rounded-xl shadow-lg lg:mx-auto">
               <Image
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop"
+                src="/images/about-portrait.jpg"
                 alt="Sarah Cassia Davies, founder of Cassia Accountancy"
                 fill
                 className="object-cover"

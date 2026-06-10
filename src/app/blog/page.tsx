@@ -19,7 +19,7 @@ const BlogPage = () => {
         subheading="Practical guides to help you understand your finances and stay on top of your obligations."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="https://images.unsplash.com/photo-1434030214721-754b118c9868?w=1200&h=800&fit=crop"
+        imageSrc="/images/blog-hero.jpg"
         compact
       />
 

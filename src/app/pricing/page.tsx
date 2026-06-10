@@ -18,7 +18,7 @@ const PricingPage = () => {
         subheading="Fixed-fee packages designed for small businesses — no surprises, no jargon."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=800&fit=crop"
+        imageSrc="/images/pricing-hero.jpg"
         compact
       />
 
