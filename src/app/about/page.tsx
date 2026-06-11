@@ -29,7 +29,7 @@ const AboutPage = () => {
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div className="relative aspect-[3/4] max-w-md overflow-hidden rounded-xl shadow-lg lg:mx-auto">
               <Image
-                src="/images/about-portrait.jpg"
+                src="/images/sarah.jpeg"
                 alt="Sarah Cassia Davies, founder of Cassia Accountancy"
                 fill
                 className="object-cover"
