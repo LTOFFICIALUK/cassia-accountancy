@@ -27,7 +27,7 @@ const ContactPage = () => {
             <div className="lg:col-span-2">
               <SectionHeading
                 title="Get in Touch"
-                subtitle="Fill in the form and we'll get back to you to arrange your free discovery call."
+                subtitle="Fill in the form and we'll be in touch with a personalised quote, usually within one working day."
                 centered={false}
               />
 
@@ -66,7 +66,7 @@ const ContactPage = () => {
             </div>
 
             <div className="lg:col-span-3">
-              <ContactForm />
+              <ContactForm variant="quote" />
             </div>
           </div>
         </div>
