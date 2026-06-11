@@ -33,7 +33,7 @@ const MakingTaxDigitalPage = () => {
         subheading="Expert support to help your business navigate digital tax reporting with confidence."
         ctaText="Book a Free MTD Consultation"
         ctaHref="/contact"
-        imageSrc="/images/mtd-hero.jpg"
+        imageSrc="/images/hmrc-letter.jpeg"
         compact
       />
 
