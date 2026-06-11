@@ -7,6 +7,7 @@ type HeroProps = {
   ctaText?: string | null;
   ctaHref?: string;
   imageSrc?: string;
+  imagePosition?: string;
   compact?: boolean;
 };
 
@@ -16,6 +17,7 @@ export const Hero = ({
   ctaText = "Book a Free Discovery Call",
   ctaHref = "/contact",
   imageSrc = "/images/hero-default.jpg",
+  imagePosition = "object-center",
   compact = false,
 }: HeroProps) => {
   return (
@@ -27,7 +29,7 @@ export const Hero = ({
           src={imageSrc}
           alt=""
           fill
-          className="object-cover"
+          className={`object-cover ${imagePosition}`}
           priority
           sizes="100vw"
         />

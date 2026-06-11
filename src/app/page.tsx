@@ -16,6 +16,7 @@ const HomePage = () => {
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
         imageSrc="/images/lion.jpeg"
+        imagePosition="object-[80%_center]"
       />
 
       <section className="py-16 sm:py-20">
