@@ -3,7 +3,8 @@ export const SITE_DESCRIPTION =
   "Cassia Accountancy helps small business owners with bookkeeping, tax returns, cloud accounting and Making Tax Digital support. Friendly, straightforward accountancy services across the UK.";
 export const FOUNDER_NAME = "Sarah Cassia Davies MAAT";
 export const CONTACT_EMAIL = "hello@cassiaaccountancy.co.uk";
-export const CONTACT_PHONE = "+44 7506 428805";
+export const CONTACT_PHONE = "0151 314 4530";
+export const CONTACT_MOBILE = "+44 7506 428805";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "@/components/Logo";
-import { NAV_LINKS } from "@/lib/constants";
+import { CONTACT_MOBILE, NAV_LINKS } from "@/lib/constants";
 
 const HEADER_NAV_LINKS = NAV_LINKS.filter((link) => link.href !== "/contact");
 
@@ -60,12 +60,12 @@ export const Header = () => {
             ))}
           </ul>
 
-          <Link
-            href="/contact"
+          <a
+            href={`tel:${CONTACT_MOBILE.replace(/\s/g, "")}`}
             className="ml-5 shrink-0 rounded-md bg-gold px-5 py-2.5 text-[13px] font-semibold tracking-wide text-white transition-colors hover:bg-gold-light"
           >
             Book a Call
-          </Link>
+          </a>
         </nav>
 
         <button
@@ -126,13 +126,13 @@ export const Header = () => {
               </li>
             ))}
             <li className="mt-3 border-t border-sage/10 pt-3">
-              <Link
-                href="/contact"
+              <a
+                href={`tel:${CONTACT_MOBILE.replace(/\s/g, "")}`}
                 onClick={handleCloseMenu}
                 className="block rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-gold-light"
               >
                 Book a Call
-              </Link>
+              </a>
             </li>
           </ul>
         </nav>
