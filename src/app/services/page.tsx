@@ -7,7 +7,7 @@ import { CheckList } from "@/components/CheckList";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Bookkeeping, Making Tax Digital, self assessment, VAT and compliance services for small businesses across the UK.",
+    "Bookkeeping, payroll, Making Tax Digital, self assessment, VAT and compliance services for small businesses across the UK.",
 };
 
 type ServiceSectionProps = {
@@ -105,6 +105,20 @@ const ServicesPage = () => {
                   "VAT returns",
                   "Management reporting",
                   "Business support",
+                ]}
+              />
+            </div>
+
+            <div className="border-t border-sage/10 pt-16">
+              <ServiceSection
+                id="payroll"
+                title="Payroll"
+                description="Reliable payroll support so your team gets paid accurately and on time."
+                items={[
+                  "Payroll processing",
+                  "PAYE and RTI submissions",
+                  "Pension auto-enrolment",
+                  "Employee payslips",
                 ]}
               />
             </div>
