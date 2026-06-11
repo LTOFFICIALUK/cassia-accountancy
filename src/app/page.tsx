@@ -37,8 +37,8 @@ const HomePage = () => {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="/images/home-intro.jpg"
-                alt="Small business team collaborating in a modern office"
+                src="/images/hmrc-letter.jpeg"
+                alt="HM Revenue and Customs letter representing tax and compliance paperwork"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
