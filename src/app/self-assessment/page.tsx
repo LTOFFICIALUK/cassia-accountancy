@@ -59,8 +59,8 @@ const SelfAssessmentPage = () => {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="/images/liverpool-city-1.jpeg"
-                alt="Royal Liver Building, Liverpool"
+                src="/images/mtd-content.jpg"
+                alt="Laptop displaying a digital tax management dashboard"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
