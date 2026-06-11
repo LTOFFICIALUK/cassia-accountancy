@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandedSelect } from "@/components/BrandedSelect";
 import { PreferredDateTimeField } from "@/components/PreferredDateTimeField";
+import type { EnquiryField } from "@/lib/enquiry-errors";
+import { getPreferredDateTimeError } from "@/lib/preferred-date-time";
 
 const SERVICE_OPTIONS = [
   "Making Tax Digital",
@@ -36,23 +38,63 @@ const BUSINESS_TYPE_SELECT_OPTIONS = BUSINESS_TYPE_OPTIONS.map((option) => ({
   label: option,
 }));
 
+const INPUT_ERROR_CLASSNAME =
+  "border-red-300 focus:border-red-400 focus:ring-red-100";
+
+type FieldErrors = Partial<Record<EnquiryField, string>>;
+
 type ContactFormProps = {
   variant?: "contact" | "quote";
 };
 
 export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
   const formLoadedAtRef = useRef(Date.now());
+  const preferredDateTimeRef = useRef<HTMLDivElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
   const isQuote = variant === "quote";
+
+  const clearErrors = () => {
+    setFieldErrors({});
+    setGeneralError(null);
+  };
+
+  const scrollToField = (field: EnquiryField) => {
+    if (field !== "preferredDateTime") {
+      return;
+    }
+
+    preferredDateTimeRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  };
+
+  useEffect(() => {
+    if (fieldErrors.preferredDateTime) {
+      scrollToField("preferredDateTime");
+    }
+  }, [fieldErrors.preferredDateTime]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-    setError(null);
+    clearErrors();
 
     const formData = new FormData(event.currentTarget);
+
+    if (isQuote) {
+      const preferredDateTime = String(formData.get("preferredDateTime") ?? "");
+      const dateError = getPreferredDateTimeError(preferredDateTime);
+
+      if (dateError) {
+        setFieldErrors({ preferredDateTime: dateError });
+        setIsSubmitting(false);
+        return;
+      }
+    }
 
     try {
       const response = await fetch("/api/enquiry", {
@@ -75,18 +117,27 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
         }),
       });
 
-      const result = (await response.json()) as { error?: string };
+      const result = (await response.json()) as {
+        error?: string;
+        field?: EnquiryField;
+      };
 
       if (!response.ok) {
-        throw new Error(result.error ?? "Unable to send your enquiry right now.");
+        if (result.field && result.error) {
+          setFieldErrors({ [result.field]: result.error });
+          scrollToField(result.field);
+        } else {
+          setGeneralError(
+            result.error ?? "We couldn't send your enquiry just now. Please try again.",
+          );
+        }
+        return;
       }
 
       setIsSubmitted(true);
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Unable to send your enquiry right now.",
+    } catch {
+      setGeneralError(
+        "We couldn't send your enquiry just now. Please check your connection and try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -147,9 +198,16 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             name="name"
             required
             disabled={isSubmitting}
-            className={INPUT_CLASSNAME}
+            className={`${INPUT_CLASSNAME} ${fieldErrors.name ? INPUT_ERROR_CLASSNAME : ""}`}
             placeholder="Your full name"
+            aria-invalid={Boolean(fieldErrors.name)}
+            aria-describedby={fieldErrors.name ? "name-error" : undefined}
           />
+          {fieldErrors.name && (
+            <p id="name-error" className="mt-1.5 text-sm text-red-700" role="alert">
+              {fieldErrors.name}
+            </p>
+          )}
         </div>
 
         <div>
@@ -184,7 +242,13 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
               placeholder="Select your business type"
               required
               disabled={isSubmitting}
+              hasError={Boolean(fieldErrors.businessType)}
             />
+            {fieldErrors.businessType && (
+              <p className="mt-1.5 text-sm text-red-700" role="alert">
+                {fieldErrors.businessType}
+              </p>
+            )}
           </div>
         )}
 
@@ -198,9 +262,16 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             name="email"
             required
             disabled={isSubmitting}
-            className={INPUT_CLASSNAME}
+            className={`${INPUT_CLASSNAME} ${fieldErrors.email ? INPUT_ERROR_CLASSNAME : ""}`}
             placeholder="you@example.com"
+            aria-invalid={Boolean(fieldErrors.email)}
+            aria-describedby={fieldErrors.email ? "email-error" : undefined}
           />
+          {fieldErrors.email && (
+            <p id="email-error" className="mt-1.5 text-sm text-red-700" role="alert">
+              {fieldErrors.email}
+            </p>
+          )}
         </div>
 
         <div>
@@ -218,14 +289,24 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
         </div>
 
         {isQuote && (
-          <div className="sm:col-span-2">
+          <div className="sm:col-span-2" ref={preferredDateTimeRef}>
             <label
               htmlFor="preferredDay"
               className="block text-sm font-medium text-charcoal"
             >
               Preferred Contact Date &amp; Time <span className="text-gold">*</span>
             </label>
-            <PreferredDateTimeField disabled={isSubmitting} />
+            <PreferredDateTimeField
+              disabled={isSubmitting}
+              error={fieldErrors.preferredDateTime}
+              onClearError={() =>
+                setFieldErrors((current) => {
+                  const next = { ...current };
+                  delete next.preferredDateTime;
+                  return next;
+                })
+              }
+            />
           </div>
         )}
 
@@ -244,7 +325,13 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             placeholder="Select a service"
             required
             disabled={isSubmitting}
+            hasError={Boolean(fieldErrors.services)}
           />
+          {fieldErrors.services && (
+            <p className="mt-1.5 text-sm text-red-700" role="alert">
+              {fieldErrors.services}
+            </p>
+          )}
         </div>
 
         <div className="sm:col-span-2">
@@ -269,13 +356,14 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
         </div>
       </div>
 
-      {error && (
-        <p
-          className="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+      {generalError && (
+        <div
+          className="mt-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-charcoal"
           role="alert"
         >
-          {error}
-        </p>
+          <p className="font-medium">We couldn&apos;t send your enquiry</p>
+          <p className="mt-1 leading-relaxed">{generalError}</p>
+        </div>
       )}
 
       <button

@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { getClientIp } from "@/lib/client-ip";
+import { ENQUIRY_ERRORS } from "@/lib/enquiry-errors";
 import { sendEnquiryEmails, type EnquiryPayload } from "@/lib/email";
+import {
+  getPreferredDateTimeError,
+} from "@/lib/preferred-date-time";
 import { checkEnquiryRateLimit } from "@/lib/rate-limit";
 import { checkSpam } from "@/lib/spam-protection";
 
@@ -11,37 +15,6 @@ type EnquiryRequestBody = Partial<EnquiryPayload> & {
 
 const isValidEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-const isValidDateTime = (dateTimeValue: string): boolean => {
-  const match = dateTimeValue.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
-
-  if (!match) {
-    return false;
-  }
-
-  const [, yearValue, monthValue, dayValue, hourValue, minuteValue] = match;
-  const year = Number(yearValue);
-  const month = Number(monthValue);
-  const day = Number(dayValue);
-  const hour = Number(hourValue);
-  const minute = Number(minuteValue);
-  const date = new Date(year, month - 1, day, hour, minute);
-
-  if (
-    Number.isNaN(date.getTime()) ||
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day ||
-    date.getHours() !== hour ||
-    date.getMinutes() !== minute
-  ) {
-    return false;
-  }
-
-  const now = new Date();
-
-  return date >= now;
 };
 
 export const POST = async (request: Request) => {
@@ -61,39 +34,38 @@ export const POST = async (request: Request) => {
     }
 
     if (!body.variant || !["contact", "quote"].includes(body.variant)) {
-      return NextResponse.json({ error: "Invalid enquiry type." }, { status: 400 });
+      return NextResponse.json(ENQUIRY_ERRORS.invalidType, { status: 400 });
     }
 
     if (!body.name?.trim()) {
-      return NextResponse.json({ error: "Name is required." }, { status: 400 });
+      return NextResponse.json(ENQUIRY_ERRORS.nameRequired, { status: 400 });
     }
 
     if (!body.email?.trim() || !isValidEmail(body.email.trim())) {
-      return NextResponse.json({ error: "A valid email is required." }, { status: 400 });
+      return NextResponse.json(ENQUIRY_ERRORS.emailRequired, { status: 400 });
     }
 
     if (!body.services?.trim()) {
-      return NextResponse.json({ error: "Please select a service." }, { status: 400 });
+      return NextResponse.json(ENQUIRY_ERRORS.serviceRequired, { status: 400 });
     }
 
     if (body.variant === "quote" && !body.businessType?.trim()) {
-      return NextResponse.json(
-        { error: "Business type is required." },
-        { status: 400 },
-      );
+      return NextResponse.json(ENQUIRY_ERRORS.businessTypeRequired, {
+        status: 400,
+      });
     }
 
     if (body.variant === "quote") {
-      if (!body.preferredDateTime?.trim()) {
-        return NextResponse.json(
-          { error: "Preferred contact date and time is required." },
-          { status: 400 },
-        );
-      }
+      const preferredDateTimeError = getPreferredDateTimeError(
+        body.preferredDateTime,
+      );
 
-      if (!isValidDateTime(body.preferredDateTime.trim())) {
+      if (preferredDateTimeError) {
         return NextResponse.json(
-          { error: "Please choose a valid future date and time." },
+          {
+            error: preferredDateTimeError,
+            field: "preferredDateTime" as const,
+          },
           { status: 400 },
         );
       }
@@ -115,13 +87,7 @@ export const POST = async (request: Request) => {
     const rateLimit = await checkEnquiryRateLimit(clientIp, payload.email);
 
     if (!rateLimit.success) {
-      return NextResponse.json(
-        {
-          error:
-            "You have sent several enquiries recently. Please wait a little while before trying again.",
-        },
-        { status: 429 },
-      );
+      return NextResponse.json(ENQUIRY_ERRORS.rateLimited, { status: 429 });
     }
 
     await sendEnquiryEmails(payload);
@@ -130,14 +96,6 @@ export const POST = async (request: Request) => {
   } catch (error) {
     console.error("Enquiry submission failed:", error);
 
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to send your enquiry right now.",
-      },
-      { status: 500 },
-    );
+    return NextResponse.json(ENQUIRY_ERRORS.sendFailed, { status: 500 });
   }
 };

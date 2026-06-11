@@ -18,6 +18,7 @@ type BrandedSelectProps = {
   onChange?: (value: string) => void;
   ariaLabel?: string;
   className?: string;
+  hasError?: boolean;
 };
 
 const ChevronDownIcon = () => (
@@ -48,6 +49,7 @@ export const BrandedSelect = ({
   onChange,
   ariaLabel,
   className = "",
+  hasError = false,
 }: BrandedSelectProps) => {
   const generatedId = useId();
   const selectId = id ?? generatedId;
@@ -138,10 +140,12 @@ export const BrandedSelect = ({
         aria-label={ariaLabel ?? placeholder}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
-        className={`flex w-full items-center justify-between rounded-md border bg-cream px-4 py-2.5 text-left text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-gold/20 disabled:cursor-not-allowed disabled:opacity-70 ${
-          isOpen
-            ? "border-gold ring-2 ring-gold/20"
-            : "border-sage/20 hover:border-gold/40"
+        className={`flex w-full items-center justify-between rounded-md border bg-cream px-4 py-2.5 text-left text-sm transition-colors focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-70 ${
+          hasError
+            ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+            : isOpen
+              ? "border-gold ring-2 ring-gold/20 focus:ring-gold/20"
+              : "border-sage/20 hover:border-gold/40 focus:ring-gold/20"
         }`}
       >
         <span className={selectedValue ? "text-charcoal" : "text-charcoal-light"}>

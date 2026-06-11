@@ -5,6 +5,8 @@ import { BrandedSelect } from "@/components/BrandedSelect";
 
 type PreferredDateTimeFieldProps = {
   disabled?: boolean;
+  error?: string | null;
+  onClearError?: () => void;
 };
 
 const MONTHS = [
@@ -54,11 +56,26 @@ const buildTimeOptions = () => {
 
 const TIME_OPTIONS = buildTimeOptions();
 
+const getSelectableYears = (year: number, month: number): number[] => {
+  const isDecember = month === 11;
+
+  return isDecember ? [year, year + 1] : [year];
+};
+
+const isSameCalendarDay = (left: Date, right: Date): boolean => {
+  return left.toDateString() === right.toDateString();
+};
+
 export const PreferredDateTimeField = ({
   disabled = false,
+  error = null,
+  onClearError,
 }: PreferredDateTimeFieldProps) => {
-  const today = new Date();
-  const currentYear = today.getFullYear();
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+  const currentMonthIndex = now.getMonth();
+  const currentDay = now.getDate();
 
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
@@ -67,39 +84,133 @@ export const PreferredDateTimeField = ({
 
   const yearOptions = useMemo(
     () =>
-      [currentYear, currentYear + 1].map((optionYear) => ({
+      getSelectableYears(currentYear, currentMonthIndex).map((optionYear) => ({
         value: String(optionYear),
         label: String(optionYear),
       })),
-    [currentYear],
+    [currentYear, currentMonthIndex],
   );
+
+  const monthOptions = useMemo(() => {
+    const selectedYear = year ? Number(year) : currentYear;
+
+    return MONTHS.filter((option) => {
+      if (selectedYear > currentYear) {
+        return true;
+      }
+
+      return Number(option.value) >= currentMonth;
+    });
+  }, [year, currentYear, currentMonth]);
 
   const dayOptions = useMemo(() => {
     if (!month || !year) {
-      return Array.from({ length: 31 }, (_, index) => {
-        const value = String(index + 1).padStart(2, "0");
-
-        return {
-          value,
-          label: String(index + 1),
-        };
-      });
+      return [];
     }
 
-    const daysInMonth = getDaysInMonth(Number(year), Number(month));
+    const selectedYear = Number(year);
+    const selectedMonth = Number(month);
+    const daysInMonth = getDaysInMonth(selectedYear, selectedMonth);
+    const minimumDay =
+      selectedYear === currentYear && selectedMonth === currentMonth
+        ? currentDay
+        : 1;
 
     return Array.from({ length: daysInMonth }, (_, index) => {
-      const value = String(index + 1).padStart(2, "0");
+      const dayNumber = index + 1;
+
+      if (dayNumber < minimumDay) {
+        return null;
+      }
+
+      const value = String(dayNumber).padStart(2, "0");
 
       return {
         value,
-        label: String(index + 1),
+        label: String(dayNumber),
       };
+    }).filter(Boolean) as { value: string; label: string }[];
+  }, [month, year, currentYear, currentMonth, currentDay]);
+
+  const timeOptions = useMemo(() => {
+    if (!day || !month || !year) {
+      return TIME_OPTIONS;
+    }
+
+    const selectedDate = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+    );
+
+    if (!isSameCalendarDay(selectedDate, new Date())) {
+      return TIME_OPTIONS;
+    }
+
+    const currentMoment = new Date();
+
+    return TIME_OPTIONS.filter((option) => {
+      const [hourValue, minuteValue] = option.value.split(":");
+      const slotDate = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hourValue),
+        Number(minuteValue),
+      );
+
+      return slotDate >= currentMoment;
     });
-  }, [month, year]);
+  }, [day, month, year]);
 
   const preferredDateTime =
     day && month && year && time ? `${year}-${month}-${day}T${time}` : "";
+
+  const noTimesAvailableToday =
+    Boolean(day && month && year) &&
+    timeOptions.length === 0 &&
+    isSameCalendarDay(
+      new Date(Number(year), Number(month) - 1, Number(day)),
+      now,
+    );
+
+  const handleDayChange = (value: string) => {
+    setDay(value);
+    onClearError?.();
+  };
+
+  const handleMonthChange = (value: string) => {
+    setMonth(value);
+    onClearError?.();
+  };
+
+  const handleYearChange = (value: string) => {
+    setYear(value);
+    onClearError?.();
+  };
+
+  const handleTimeChange = (value: string) => {
+    setTime(value);
+    onClearError?.();
+  };
+
+  useEffect(() => {
+    if (month && !monthOptions.some((option) => option.value === month)) {
+      setMonth("");
+    }
+  }, [month, monthOptions]);
+
+  useEffect(() => {
+    if (day && !dayOptions.some((option) => option.value === day)) {
+      setDay("");
+    }
+  }, [day, dayOptions]);
+
+  useEffect(() => {
+    if (time && !timeOptions.some((option) => option.value === time)) {
+      setTime("");
+    }
+  }, [time, timeOptions]);
 
   useEffect(() => {
     if (!day || !month || !year) {
@@ -123,33 +234,23 @@ export const PreferredDateTimeField = ({
         disabled={disabled}
       />
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div>
-          <span className="sr-only">Day</span>
-          <BrandedSelect
-            id="preferredDay"
-            name="preferredDay"
-            options={dayOptions}
-            placeholder="Day"
-            required
-            disabled={disabled}
-            value={day}
-            onChange={setDay}
-            ariaLabel="Preferred contact day"
-          />
-        </div>
-
+      <div
+        className={`grid gap-3 sm:grid-cols-3 ${
+          error ? "rounded-md ring-2 ring-red-200" : ""
+        }`}
+      >
         <div>
           <span className="sr-only">Month</span>
           <BrandedSelect
             name="preferredMonth"
-            options={MONTHS}
+            options={monthOptions}
             placeholder="Month"
             required
             disabled={disabled}
             value={month}
-            onChange={setMonth}
+            onChange={handleMonthChange}
             ariaLabel="Preferred contact month"
+            hasError={Boolean(error)}
           />
         </div>
 
@@ -162,8 +263,25 @@ export const PreferredDateTimeField = ({
             required
             disabled={disabled}
             value={year}
-            onChange={setYear}
+            onChange={handleYearChange}
             ariaLabel="Preferred contact year"
+            hasError={Boolean(error)}
+          />
+        </div>
+
+        <div>
+          <span className="sr-only">Day</span>
+          <BrandedSelect
+            id="preferredDay"
+            name="preferredDay"
+            options={dayOptions}
+            placeholder={month && year ? "Day" : "Choose month first"}
+            required
+            disabled={disabled || !month || !year}
+            value={day}
+            onChange={handleDayChange}
+            ariaLabel="Preferred contact day"
+            hasError={Boolean(error)}
           />
         </div>
       </div>
@@ -172,19 +290,33 @@ export const PreferredDateTimeField = ({
         <span className="sr-only">Time</span>
         <BrandedSelect
           name="preferredTime"
-          options={TIME_OPTIONS}
-          placeholder="Select a time"
+          options={timeOptions}
+          placeholder={
+            noTimesAvailableToday ? "No times left today" : "Select a time"
+          }
           required
-          disabled={disabled}
+          disabled={disabled || noTimesAvailableToday}
           value={time}
-          onChange={setTime}
+          onChange={handleTimeChange}
           ariaLabel="Preferred contact time"
+          hasError={Boolean(error)}
         />
       </div>
 
-      <p className="mt-2 text-xs text-charcoal-light">
-        Choose when you would like us to get in touch about your quote.
-      </p>
+      {error ? (
+        <p className="mt-2 text-sm text-red-700" role="alert">
+          {error}
+        </p>
+      ) : noTimesAvailableToday ? (
+        <p className="mt-2 text-sm text-charcoal-light">
+          There are no appointment times left today. Please choose another day.
+        </p>
+      ) : (
+        <p className="mt-2 text-xs text-charcoal-light">
+          Choose a date and time from today onwards. We are available Monday to
+          Friday, 8am to 5pm.
+        </p>
+      )}
     </div>
   );
 };

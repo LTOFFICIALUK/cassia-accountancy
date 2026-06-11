@@ -1,4 +1,12 @@
 import { Resend } from "resend";
+import {
+  buildDetailsTable,
+  buildEmailHeading,
+  buildEmailLayout,
+  buildEmailParagraph,
+  buildEmailSectionTitle,
+  escapeHtml,
+} from "@/lib/email-template";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/constants";
 
 const resend = process.env.RESEND_API_KEY
@@ -37,68 +45,118 @@ export const formatPreferredDateTime = (dateTimeValue: string): string => {
   });
 };
 
-const buildEnquiryDetails = (payload: EnquiryPayload): string => {
-  const lines = [
-    `<strong>Name:</strong> ${payload.name}`,
+const buildEnquiryDetailRows = (payload: EnquiryPayload) => {
+  return [
+    { label: "Name", value: payload.name },
     payload.businessName
-      ? `<strong>Business Name:</strong> ${payload.businessName}`
+      ? { label: "Business Name", value: payload.businessName }
       : null,
     payload.businessType
-      ? `<strong>Business Type:</strong> ${payload.businessType}`
+      ? { label: "Business Type", value: payload.businessType }
       : null,
-    `<strong>Email:</strong> ${payload.email}`,
-    payload.phone ? `<strong>Phone:</strong> ${payload.phone}` : null,
-    `<strong>Services:</strong> ${payload.services}`,
+    { label: "Email", value: payload.email },
+    payload.phone ? { label: "Phone", value: payload.phone } : null,
+    { label: "Services", value: payload.services },
     payload.preferredDateTime
-      ? `<strong>Preferred Contact Date & Time:</strong> ${formatPreferredDateTime(payload.preferredDateTime)}`
+      ? {
+          label: "Preferred Contact Date & Time",
+          value: formatPreferredDateTime(payload.preferredDateTime),
+        }
       : null,
     payload.message
-      ? `<strong>${payload.variant === "quote" ? "About Their Needs" : "Message"}:</strong><br />${payload.message.replace(/\n/g, "<br />")}`
+      ? {
+          label: payload.variant === "quote" ? "About Their Needs" : "Message",
+          value: payload.message,
+          multiline: true,
+        }
       : null,
-  ].filter(Boolean);
-
-  return lines.join("<br /><br />");
+  ].filter(Boolean) as {
+    label: string;
+    value: string;
+    multiline?: boolean;
+  }[];
 };
 
 const buildOwnerEmail = (payload: EnquiryPayload) => {
   const isQuote = payload.variant === "quote";
+  const title = isQuote ? "New quote request" : "New contact enquiry";
+  const intro = isQuote
+    ? "You have received a new quote request from your website."
+    : "You have received a new contact enquiry from your website.";
+
+  const content = [
+    buildEmailHeading(title),
+    buildEmailParagraph(intro),
+    buildEmailSectionTitle("Enquiry details"),
+    buildDetailsTable(buildEnquiryDetailRows(payload)),
+    buildEmailParagraph(
+      `Reply directly to <a href="mailto:${escapeHtml(payload.email)}" style="color:#5D6B5D;text-decoration:underline;">${escapeHtml(payload.email)}</a> to follow up.`,
+    ),
+  ].join("");
 
   return {
     subject: isQuote
       ? `New quote request from ${payload.name}`
       : `New contact enquiry from ${payload.name}`,
-    html: `
-      <p>You have received a new ${isQuote ? "quote request" : "contact enquiry"} from your website.</p>
-      <p>${buildEnquiryDetails(payload)}</p>
-      <p>Reply directly to ${payload.email} to follow up.</p>
-    `,
+    html: buildEmailLayout({
+      previewText: intro,
+      content,
+    }),
   };
 };
 
 const buildCustomerEmail = (payload: EnquiryPayload) => {
   const isQuote = payload.variant === "quote";
+  const subject = isQuote
+    ? "We've received your quote request"
+    : "We've received your enquiry";
+  const greeting = buildEmailParagraph(
+    `Hi ${escapeHtml(payload.name)},`,
+  );
+  const thankYou = buildEmailParagraph(
+    `Thank you for getting in touch with ${SITE_NAME}.`,
+  );
+  const confirmation = buildEmailParagraph(
+    isQuote
+      ? "We have received your quote request and will review your details before sending a personalised quote, usually within one working day."
+      : "We have received your message and will be in touch shortly to arrange your free discovery call.",
+  );
   const preferredDateTimeLine = payload.preferredDateTime
-    ? `<p>Your preferred contact date and time is <strong>${formatPreferredDateTime(payload.preferredDateTime)}</strong>. We will do our best to get in touch around this time.</p>`
+    ? buildEmailParagraph(
+        `Your preferred contact date and time is <strong style="color:#333333;">${escapeHtml(formatPreferredDateTime(payload.preferredDateTime))}</strong>. We will do our best to get in touch around this time.`,
+      )
     : "";
+  const summary = [
+    buildEmailSectionTitle("Summary of your enquiry"),
+    buildDetailsTable(buildEnquiryDetailRows(payload)),
+  ].join("");
+  const closing = buildEmailParagraph(
+    "If anything looks incorrect, simply reply to this email and we will update your enquiry.",
+  );
+  const signOff = buildEmailParagraph(
+    `Kind regards,<br /><strong style="color:#5D6B5D;">${SITE_NAME}</strong>`,
+  );
+
+  const content = [
+    greeting,
+    thankYou,
+    confirmation,
+    preferredDateTimeLine,
+    summary,
+    closing,
+    signOff,
+  ]
+    .filter(Boolean)
+    .join("");
 
   return {
-    subject: isQuote
-      ? "We've received your quote request"
-      : "We've received your enquiry",
-    html: `
-      <p>Hi ${payload.name},</p>
-      <p>Thank you for getting in touch with ${SITE_NAME}.</p>
-      <p>${
-        isQuote
-          ? "We have received your quote request and will review your details before sending a personalised quote, usually within one working day."
-          : "We have received your message and will be in touch shortly to arrange your free discovery call."
-      }</p>
-      ${preferredDateTimeLine}
-      <p><strong>Summary of your enquiry:</strong></p>
-      <p>${buildEnquiryDetails(payload)}</p>
-      <p>If anything looks incorrect, reply to this email and we will update your enquiry.</p>
-      <p>Kind regards,<br />${SITE_NAME}</p>
-    `,
+    subject,
+    html: buildEmailLayout({
+      previewText: isQuote
+        ? "Thanks for your quote request. We will be in touch shortly."
+        : "Thanks for your enquiry. We will be in touch shortly.",
+      content,
+    }),
   };
 };
 
