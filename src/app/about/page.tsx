@@ -27,7 +27,7 @@ const AboutPage = () => {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-start gap-12 lg:grid-cols-2">
-            <div className="relative aspect-[3/4] max-w-md overflow-hidden rounded-xl shadow-lg lg:mx-auto">
+            <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-xl shadow-lg lg:mx-auto">
               <Image
                 src="/images/sarah.jpeg"
                 alt="Sarah Cassia Davies, founder of Cassia Accountancy"
