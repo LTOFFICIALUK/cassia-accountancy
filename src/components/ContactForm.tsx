@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BrandedSelect } from "@/components/BrandedSelect";
 import { PreferredDateTimeField } from "@/components/PreferredDateTimeField";
 
@@ -41,6 +41,7 @@ type ContactFormProps = {
 };
 
 export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
+  const formLoadedAtRef = useRef(Date.now());
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +70,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
           services: formData.get("services"),
           preferredDateTime: formData.get("preferredDateTime"),
           message: formData.get("message"),
+          website: formData.get("website"),
+          formLoadedAt: formLoadedAtRef.current,
         }),
       });
 
@@ -118,6 +121,21 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
       className="rounded-xl border border-sage/10 bg-white p-6 shadow-sm sm:p-8"
       aria-label={isQuote ? "Quote request form" : "Contact form"}
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0"
+      >
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          disabled={isSubmitting}
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-charcoal">

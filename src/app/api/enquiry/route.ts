@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
+import { getClientIp } from "@/lib/client-ip";
 import { sendEnquiryEmails, type EnquiryPayload } from "@/lib/email";
+import { checkEnquiryRateLimit } from "@/lib/rate-limit";
+import { checkSpam } from "@/lib/spam-protection";
+
+type EnquiryRequestBody = Partial<EnquiryPayload> & {
+  website?: string;
+  formLoadedAt?: number;
+};
 
 const isValidEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -38,7 +46,19 @@ const isValidDateTime = (dateTimeValue: string): boolean => {
 
 export const POST = async (request: Request) => {
   try {
-    const body = (await request.json()) as Partial<EnquiryPayload>;
+    const body = (await request.json()) as EnquiryRequestBody;
+
+    const spamCheck = checkSpam({
+      website: body.website,
+      formLoadedAt: body.formLoadedAt,
+      name: body.name?.trim() ?? "",
+      email: body.email?.trim() ?? "",
+      message: body.message?.trim(),
+    });
+
+    if (spamCheck.blocked) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!body.variant || !["contact", "quote"].includes(body.variant)) {
       return NextResponse.json({ error: "Invalid enquiry type." }, { status: 400 });
@@ -90,6 +110,19 @@ export const POST = async (request: Request) => {
       message: body.message?.trim() || undefined,
       preferredDateTime: body.preferredDateTime?.trim() || undefined,
     };
+
+    const clientIp = getClientIp(request);
+    const rateLimit = await checkEnquiryRateLimit(clientIp, payload.email);
+
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        {
+          error:
+            "You have sent several enquiries recently. Please wait a little while before trying again.",
+        },
+        { status: 429 },
+      );
+    }
 
     await sendEnquiryEmails(payload);
 
