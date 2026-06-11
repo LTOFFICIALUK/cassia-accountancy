@@ -15,6 +15,7 @@ const HomePage = () => {
         subheading="Supporting Small Business Owners with Tax Planning, Financial Insight and Efficient Systems That Save Time and Money."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
+        imageSrc="/images/lion.jpeg"
       />
 
       <section className="py-16 sm:py-20">
