@@ -66,13 +66,13 @@ const HomePage = () => {
             <ServiceCard
               title="Bookkeeping & Accounts"
               description="Accurate bookkeeping and financial reporting to keep you in control."
-              href="/services#bookkeeping"
+              href="/bookkeeping-accounts"
               icon={<BookkeepingIcon />}
             />
             <ServiceCard
               title="Tax Returns & Compliance"
               description="Reliable support for self-assessment, VAT and year-end obligations."
-              href="/services#tax"
+              href="/tax-returns-compliance"
               icon={<TaxIcon />}
             />
           </div>

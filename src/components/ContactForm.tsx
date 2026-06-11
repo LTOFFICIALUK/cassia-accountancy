@@ -6,6 +6,7 @@ const SERVICE_OPTIONS = [
   "Making Tax Digital",
   "Bookkeeping & Accounts",
   "Tax Returns & Compliance",
+  "Payroll",
   "Self Assessment",
   "VAT",
   "General Enquiry",
