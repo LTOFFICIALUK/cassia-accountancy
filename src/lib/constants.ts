@@ -28,7 +28,8 @@ export const WHY_CHOOSE_US = [
 export const QUALIFICATIONS = [
   "AAT Qualified Accountant",
   "MAAT Member",
-  "Finance Officer at a national charity",
+  "Over 25 years experience",
+  "Xero accounting partner",
   "Experienced in cloud accounting systems",
   "Making Tax Digital specialist",
 ] as const;
