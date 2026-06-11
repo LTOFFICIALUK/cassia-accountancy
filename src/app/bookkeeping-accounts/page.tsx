@@ -58,8 +58,8 @@ const BookkeepingAccountsPage = () => {
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="/images/sarah1.jpeg"
-                alt="Accountant reviewing financial records"
+                src="/images/dubai-view.jpeg"
+                alt="Modern city skyline representing business growth and financial clarity"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
