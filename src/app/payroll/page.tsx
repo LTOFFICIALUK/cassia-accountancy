@@ -7,33 +7,33 @@ import { Hero } from "@/components/Hero";
 import { SectionHeading } from "@/components/SectionHeading";
 
 export const metadata: Metadata = {
-  title: "Tax Returns & Compliance",
+  title: "Payroll",
   description:
-    "Reliable support for self-assessment, VAT returns and year-end compliance. Help for sole traders, landlords, freelancers and small businesses.",
+    "Reliable payroll support for small businesses. Payroll processing, PAYE, RTI submissions, pension auto-enrolment and employee payslips.",
   keywords: [
-    "self assessment accountant",
-    "VAT returns",
-    "tax compliance",
-    "year-end accounts",
+    "small business payroll",
+    "PAYE accountant",
+    "payroll processing",
+    "pension auto-enrolment",
   ],
 };
 
-const TAX_HELP_ITEMS = [
-  "Meet HMRC deadlines with confidence",
-  "Claim all allowable expenses and reliefs",
-  "Stay compliant with changing tax rules",
-  "Avoid penalties and unnecessary stress",
+const PAYROLL_HELP_ITEMS = [
+  "Pay your team accurately and on time",
+  "Meet PAYE and RTI submission deadlines",
+  "Stay compliant with pension auto-enrolment",
+  "Reduce admin so you can focus on your business",
 ] as const;
 
-const TaxReturnsCompliancePage = () => {
+const PayrollPage = () => {
   return (
     <>
       <Hero
-        headline="Tax Returns & Compliance"
-        subheading="Reliable support for self-assessment, VAT and year-end obligations — so you stay compliant without the worry."
+        headline="Payroll Services"
+        subheading="Reliable payroll support so your team gets paid accurately and on time."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/hmrc-letter.jpeg"
+        imageSrc="/images/sarah.jpeg"
         compact
       />
 
@@ -42,25 +42,25 @@ const TaxReturnsCompliancePage = () => {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
               <SectionHeading
-                title="Tax Doesn't Have to Be Stressful"
+                title="Payroll You Can Rely On"
                 centered={false}
               />
               <p className="mt-6 text-base leading-relaxed text-charcoal-light">
-                Tax returns, VAT submissions and year-end compliance can feel
-                overwhelming — especially when you&apos;re busy running a
-                business. Getting it wrong can lead to penalties, missed
-                reliefs and sleepless nights.
+                Running payroll means more than just paying wages. You need to
+                calculate tax and National Insurance correctly, submit RTI
+                returns to HMRC on time, and manage pension auto-enrolment —
+                all while keeping your employees informed.
               </p>
               <p className="mt-4 text-base leading-relaxed text-charcoal-light">
-                We provide clear, reliable support for sole traders, landlords,
-                freelancers and small business owners — handling the details so
-                you meet every obligation on time.
+                We take the complexity off your plate with accurate, timely
+                payroll processing that keeps your team paid and your business
+                compliant.
               </p>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="/images/liverpool-city.jpeg"
-                alt="Liverpool city skyline representing local business support"
+                src="/images/plants.jpeg"
+                alt="Office plants representing a calm, organised workplace"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -74,16 +74,16 @@ const TaxReturnsCompliancePage = () => {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="How Cassia Accountancy Helps"
-            subtitle="From self-assessment to VAT and year-end accounts, we guide you through every step."
+            subtitle="We handle the payroll admin so you can focus on running and growing your business."
           />
           <div className="mx-auto mt-10 max-w-xl">
-            <CheckList items={TAX_HELP_ITEMS} />
+            <CheckList items={PAYROLL_HELP_ITEMS} />
           </div>
           <div className="mt-10 text-center">
             <Button
               href="/contact"
               variant="secondary"
-              ariaLabel="Book a free discovery call for tax support"
+              ariaLabel="Book a free discovery call for payroll support"
             >
               Book a Free Discovery Call
             </Button>
@@ -94,40 +94,40 @@ const TaxReturnsCompliancePage = () => {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Our Tax & Compliance Services"
-            subtitle="Comprehensive support tailored to your business structure and obligations."
+            title="Our Payroll Services"
+            subtitle="Complete payroll support for small businesses with employees."
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                title: "Self Assessment",
+                title: "Payroll Processing",
                 description:
-                  "Complete tax return preparation for sole traders, landlords, freelancers and directors.",
+                  "Accurate calculation of wages, tax, National Insurance and deductions every pay period.",
               },
               {
-                title: "VAT Returns",
+                title: "PAYE & RTI Submissions",
                 description:
-                  "Accurate VAT calculations and timely submissions, whether you're newly registered or established.",
+                  "Timely Real Time Information submissions to HMRC so you stay compliant with PAYE obligations.",
               },
               {
-                title: "Year-End Accounts",
+                title: "Pension Auto-Enrolment",
                 description:
-                  "Professional year-end accounts prepared to meet filing requirements and inform your decisions.",
+                  "Setup and ongoing management of workplace pension contributions for eligible employees.",
               },
               {
-                title: "Management Reporting",
+                title: "Employee Payslips",
                 description:
-                  "Regular financial insights to help you track performance and plan for the future.",
+                  "Clear, professional payslips delivered to your team each pay period.",
               },
               {
-                title: "Compliance Advice",
+                title: "Starter & Leaver Processing",
                 description:
-                  "Proactive guidance on your tax obligations so you stay ahead of deadlines and rule changes.",
+                  "Smooth onboarding and offboarding with correct tax codes and final payments handled.",
               },
               {
-                title: "Business Support",
+                title: "Year-End Reporting",
                 description:
-                  "Practical advice on structuring income, expenses and reliefs to keep your tax position efficient.",
+                  "P60s, P11Ds and other year-end payroll reporting prepared and submitted on time.",
               },
             ].map((service) => (
               <div
@@ -147,12 +147,12 @@ const TaxReturnsCompliancePage = () => {
       </section>
 
       <CTASection
-        title="Need help with your tax obligations?"
-        description="Book your free discovery call and we'll explain exactly how we can support you."
+        title="Ready to simplify your payroll?"
+        description="Book your free discovery call and find out how we can take the admin off your plate."
         buttonText="Book a Free Discovery Call"
       />
     </>
   );
 };
 
-export default TaxReturnsCompliancePage;
+export default PayrollPage;

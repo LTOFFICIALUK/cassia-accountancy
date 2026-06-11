@@ -72,7 +72,7 @@ const HomePage = () => {
             <ServiceCard
               title="Tax Returns & Compliance"
               description="Reliable support for self-assessment, VAT and year-end obligations."
-              href="/tax-returns-compliance"
+              href="/accounts-compliance"
               icon={<TaxIcon />}
             />
           </div>

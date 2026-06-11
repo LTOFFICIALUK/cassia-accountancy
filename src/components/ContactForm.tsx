@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { BrandedSelect } from "@/components/BrandedSelect";
+import { PreferredDateTimeField } from "@/components/PreferredDateTimeField";
 
 const SERVICE_OPTIONS = [
   "Making Tax Digital",
@@ -24,14 +26,15 @@ const BUSINESS_TYPE_OPTIONS = [
 const INPUT_CLASSNAME =
   "mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20";
 
-const getMinDate = (): string => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
+const SERVICE_SELECT_OPTIONS = SERVICE_OPTIONS.map((option) => ({
+  value: option,
+  label: option,
+}));
 
-  return `${year}-${month}-${day}`;
-};
+const BUSINESS_TYPE_SELECT_OPTIONS = BUSINESS_TYPE_OPTIONS.map((option) => ({
+  value: option,
+  label: option,
+}));
 
 type ContactFormProps = {
   variant?: "contact" | "quote";
@@ -42,7 +45,6 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isQuote = variant === "quote";
-  const minDate = getMinDate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,7 +67,7 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
           email: formData.get("email"),
           phone: formData.get("phone"),
           services: formData.get("services"),
-          preferredDate: formData.get("preferredDate"),
+          preferredDateTime: formData.get("preferredDateTime"),
           message: formData.get("message"),
         }),
       });
@@ -157,23 +159,14 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             >
               Business Type <span className="text-gold">*</span>
             </label>
-            <select
+            <BrandedSelect
               id="businessType"
               name="businessType"
+              options={BUSINESS_TYPE_SELECT_OPTIONS}
+              placeholder="Select your business type"
               required
               disabled={isSubmitting}
-              className={INPUT_CLASSNAME}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select your business type
-              </option>
-              {BUSINESS_TYPE_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         )}
 
@@ -209,24 +202,12 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
         {isQuote && (
           <div className="sm:col-span-2">
             <label
-              htmlFor="preferredDate"
+              htmlFor="preferredDay"
               className="block text-sm font-medium text-charcoal"
             >
-              Preferred Contact Date <span className="text-gold">*</span>
+              Preferred Contact Date &amp; Time <span className="text-gold">*</span>
             </label>
-            <input
-              type="date"
-              id="preferredDate"
-              name="preferredDate"
-              required
-              min={minDate}
-              disabled={isSubmitting}
-              className={`${INPUT_CLASSNAME} [color-scheme:light]`}
-              aria-label="Choose your preferred contact date"
-            />
-            <p className="mt-2 text-xs text-charcoal-light">
-              Choose the date you would like us to get in touch about your quote.
-            </p>
+            <PreferredDateTimeField disabled={isSubmitting} />
           </div>
         )}
 
@@ -238,23 +219,14 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             {isQuote ? "Services Interested In" : "Services Needed"}{" "}
             <span className="text-gold">*</span>
           </label>
-          <select
+          <BrandedSelect
             id="services"
             name="services"
+            options={SERVICE_SELECT_OPTIONS}
+            placeholder="Select a service"
             required
             disabled={isSubmitting}
-            className={INPUT_CLASSNAME}
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Select a service
-            </option>
-            {SERVICE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div className="sm:col-span-2">

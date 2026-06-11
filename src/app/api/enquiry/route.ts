@@ -5,23 +5,35 @@ const isValidEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-const isValidDate = (dateValue: string): boolean => {
-  const [year, month, day] = dateValue.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
+const isValidDateTime = (dateTimeValue: string): boolean => {
+  const match = dateTimeValue.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+
+  if (!match) {
+    return false;
+  }
+
+  const [, yearValue, monthValue, dayValue, hourValue, minuteValue] = match;
+  const year = Number(yearValue);
+  const month = Number(monthValue);
+  const day = Number(dayValue);
+  const hour = Number(hourValue);
+  const minute = Number(minuteValue);
+  const date = new Date(year, month - 1, day, hour, minute);
 
   if (
     Number.isNaN(date.getTime()) ||
     date.getFullYear() !== year ||
     date.getMonth() !== month - 1 ||
-    date.getDate() !== day
+    date.getDate() !== day ||
+    date.getHours() !== hour ||
+    date.getMinutes() !== minute
   ) {
     return false;
   }
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
 
-  return date >= today;
+  return date >= now;
 };
 
 export const POST = async (request: Request) => {
@@ -52,16 +64,16 @@ export const POST = async (request: Request) => {
     }
 
     if (body.variant === "quote") {
-      if (!body.preferredDate?.trim()) {
+      if (!body.preferredDateTime?.trim()) {
         return NextResponse.json(
-          { error: "Preferred contact date is required." },
+          { error: "Preferred contact date and time is required." },
           { status: 400 },
         );
       }
 
-      if (!isValidDate(body.preferredDate.trim())) {
+      if (!isValidDateTime(body.preferredDateTime.trim())) {
         return NextResponse.json(
-          { error: "Please choose a valid future date." },
+          { error: "Please choose a valid future date and time." },
           { status: 400 },
         );
       }
@@ -76,7 +88,7 @@ export const POST = async (request: Request) => {
       businessType: body.businessType?.trim() || undefined,
       services: body.services.trim(),
       message: body.message?.trim() || undefined,
-      preferredDate: body.preferredDate?.trim() || undefined,
+      preferredDateTime: body.preferredDateTime?.trim() || undefined,
     };
 
     await sendEnquiryEmails(payload);

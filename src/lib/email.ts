@@ -17,18 +17,23 @@ export type EnquiryPayload = {
   businessType?: string;
   services: string;
   message?: string;
-  preferredDate?: string;
+  preferredDateTime?: string;
 };
 
-export const formatPreferredDate = (dateValue: string): string => {
-  const [year, month, day] = dateValue.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
+export const formatPreferredDateTime = (dateTimeValue: string): string => {
+  const [datePart, timePart] = dateTimeValue.split("T");
+  const [year, month, day] = datePart.split("-").map(Number);
+  const [hour, minute] = timePart.split(":").map(Number);
+  const date = new Date(year, month - 1, day, hour, minute);
 
-  return date.toLocaleDateString("en-GB", {
+  return date.toLocaleString("en-GB", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 };
 
@@ -44,8 +49,8 @@ const buildEnquiryDetails = (payload: EnquiryPayload): string => {
     `<strong>Email:</strong> ${payload.email}`,
     payload.phone ? `<strong>Phone:</strong> ${payload.phone}` : null,
     `<strong>Services:</strong> ${payload.services}`,
-    payload.preferredDate
-      ? `<strong>Preferred Contact Date:</strong> ${formatPreferredDate(payload.preferredDate)}`
+    payload.preferredDateTime
+      ? `<strong>Preferred Contact Date & Time:</strong> ${formatPreferredDateTime(payload.preferredDateTime)}`
       : null,
     payload.message
       ? `<strong>${payload.variant === "quote" ? "About Their Needs" : "Message"}:</strong><br />${payload.message.replace(/\n/g, "<br />")}`
@@ -72,8 +77,8 @@ const buildOwnerEmail = (payload: EnquiryPayload) => {
 
 const buildCustomerEmail = (payload: EnquiryPayload) => {
   const isQuote = payload.variant === "quote";
-  const preferredDateLine = payload.preferredDate
-    ? `<p>Your preferred contact date is <strong>${formatPreferredDate(payload.preferredDate)}</strong>. We will do our best to get in touch around this time.</p>`
+  const preferredDateTimeLine = payload.preferredDateTime
+    ? `<p>Your preferred contact date and time is <strong>${formatPreferredDateTime(payload.preferredDateTime)}</strong>. We will do our best to get in touch around this time.</p>`
     : "";
 
   return {
@@ -88,7 +93,7 @@ const buildCustomerEmail = (payload: EnquiryPayload) => {
           ? "We have received your quote request and will review your details before sending a personalised quote, usually within one working day."
           : "We have received your message and will be in touch shortly to arrange your free discovery call."
       }</p>
-      ${preferredDateLine}
+      ${preferredDateTimeLine}
       <p><strong>Summary of your enquiry:</strong></p>
       <p>${buildEnquiryDetails(payload)}</p>
       <p>If anything looks incorrect, reply to this email and we will update your enquiry.</p>

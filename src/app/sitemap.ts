@@ -31,7 +31,19 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.9,
   },
   {
-    url: `${SITE_URL}/tax-returns-compliance`,
+    url: `${SITE_URL}/self-assessment`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
+    url: `${SITE_URL}/accounts-compliance`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
+    url: `${SITE_URL}/payroll`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.9,

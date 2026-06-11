@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
-import { SectionHeading } from "@/components/SectionHeading";
 import { CheckList } from "@/components/CheckList";
 
 export const metadata: Metadata = {
@@ -14,6 +14,7 @@ type ServiceSectionProps = {
   id: string;
   title: string;
   description: string;
+  href: string;
   items: readonly string[];
   subtitle?: string;
 };
@@ -22,18 +23,37 @@ const ServiceSection = ({
   id,
   title,
   description,
+  href,
   items,
   subtitle,
 }: ServiceSectionProps) => {
   return (
     <div id={id} className="scroll-mt-24">
-      <SectionHeading title={title} subtitle={description} centered={false} />
+      <Link
+        href={href}
+        className="group inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+        aria-label={`Learn more about ${title}`}
+      >
+        <h2 className="font-heading text-3xl font-semibold text-sage transition-colors group-hover:text-gold sm:text-4xl">
+          {title}
+        </h2>
+      </Link>
+      <p className="mt-4 max-w-2xl text-base leading-relaxed text-charcoal-light sm:text-lg">
+        {description}
+      </p>
       {subtitle && (
         <p className="mt-2 text-sm font-medium text-gold">{subtitle}</p>
       )}
       <div className="mt-6">
         <CheckList items={items} />
       </div>
+      <Link
+        href={href}
+        className="mt-6 inline-flex items-center text-sm font-semibold text-gold transition-colors hover:text-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+        aria-label={`Learn more about ${title}`}
+      >
+        Learn more &rarr;
+      </Link>
     </div>
   );
 };
@@ -57,6 +77,7 @@ const ServicesPage = () => {
               id="mtd"
               title="Making Tax Digital"
               description="Preparing businesses for the future of digital tax reporting."
+              href="/making-tax-digital"
               items={[
                 "MTD readiness reviews",
                 "Software setup",
@@ -71,6 +92,7 @@ const ServicesPage = () => {
                 id="bookkeeping"
                 title="Bookkeeping"
                 description="Stay organised with accurate and timely bookkeeping."
+                href="/bookkeeping-accounts"
                 items={[
                   "Transaction processing",
                   "Bank reconciliations",
@@ -85,6 +107,7 @@ const ServicesPage = () => {
                 id="self-assessment"
                 title="Self Assessment"
                 description="Take the stress out of tax returns."
+                href="/self-assessment"
                 subtitle="Suitable for:"
                 items={[
                   "Sole traders",
@@ -97,9 +120,10 @@ const ServicesPage = () => {
 
             <div className="border-t border-sage/10 pt-16">
               <ServiceSection
-                id="tax"
+                id="accounts-compliance"
                 title="Accounts & Compliance"
                 description="Year-end support and ongoing compliance to keep your business on track."
+                href="/accounts-compliance"
                 items={[
                   "Year-end accounts",
                   "VAT returns",
@@ -114,6 +138,7 @@ const ServicesPage = () => {
                 id="payroll"
                 title="Payroll"
                 description="Reliable payroll support so your team gets paid accurately and on time."
+                href="/payroll"
                 items={[
                   "Payroll processing",
                   "PAYE and RTI submissions",
