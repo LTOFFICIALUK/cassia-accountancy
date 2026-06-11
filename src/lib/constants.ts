@@ -1,4 +1,5 @@
 export const SITE_NAME = "Cassia Accountancy";
+export const SITE_URL = "https://www.cassiaaccountancy.co.uk";
 export const SITE_DESCRIPTION =
   "Cassia Accountancy helps small business owners with bookkeeping, tax returns, cloud accounting and Making Tax Digital support. Friendly, straightforward accountancy services across the UK.";
 export const FOUNDER_NAME = "Sarah Cassia Davies MAAT";
