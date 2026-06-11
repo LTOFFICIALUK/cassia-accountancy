@@ -11,8 +11,8 @@ const HomePage = () => {
   return (
     <>
       <Hero
-        headline="Accountancy Support That Makes Business Simpler"
-        subheading="Helping small business owners stay organised, compliant and ready for Making Tax Digital."
+        headline="Clear Advice. Better Decisions. Stronger Businesses."
+        subheading="Supporting Small Business Owners with Tax Planning, Financial Insight and Efficient Systems That Save Time and Money."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
       />
