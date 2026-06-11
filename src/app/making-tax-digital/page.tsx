@@ -57,12 +57,12 @@ const MakingTaxDigitalPage = () => {
                 staying compliant and avoiding penalties.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white shadow-lg">
               <Image
-                src="/images/mtd-content.jpg"
-                alt="Business owner reviewing digital tax records on a laptop"
+                src="/images/making-tax-digital.jpg"
+                alt="Making Tax Digital official branding"
                 fill
-                className="object-cover"
+                className="object-contain p-6"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
