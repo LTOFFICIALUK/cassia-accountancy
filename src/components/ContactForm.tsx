@@ -21,17 +21,71 @@ const BUSINESS_TYPE_OPTIONS = [
   "Other",
 ] as const;
 
+const INPUT_CLASSNAME =
+  "mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20";
+
+const getMinDate = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
 type ContactFormProps = {
   variant?: "contact" | "quote";
 };
 
 export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const isQuote = variant === "quote";
+  const minDate = getMinDate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          variant,
+          name: formData.get("name"),
+          businessName: formData.get("businessName"),
+          businessType: formData.get("businessType"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          services: formData.get("services"),
+          preferredDate: formData.get("preferredDate"),
+          message: formData.get("message"),
+        }),
+      });
+
+      const result = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error ?? "Unable to send your enquiry right now.");
+      }
+
+      setIsSubmitted(true);
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Unable to send your enquiry right now.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -72,7 +126,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             id="name"
             name="name"
             required
-            className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={INPUT_CLASSNAME}
             placeholder="Your full name"
           />
         </div>
@@ -88,7 +143,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             type="text"
             id="businessName"
             name="businessName"
-            className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={INPUT_CLASSNAME}
             placeholder="Your business name"
           />
         </div>
@@ -105,7 +161,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
               id="businessType"
               name="businessType"
               required
-              className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+              disabled={isSubmitting}
+              className={INPUT_CLASSNAME}
               defaultValue=""
             >
               <option value="" disabled>
@@ -129,7 +186,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             id="email"
             name="email"
             required
-            className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={INPUT_CLASSNAME}
             placeholder="you@example.com"
           />
         </div>
@@ -142,10 +200,35 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             type="tel"
             id="phone"
             name="phone"
-            className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={INPUT_CLASSNAME}
             placeholder="Your phone number"
           />
         </div>
+
+        {isQuote && (
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="preferredDate"
+              className="block text-sm font-medium text-charcoal"
+            >
+              Preferred Contact Date <span className="text-gold">*</span>
+            </label>
+            <input
+              type="date"
+              id="preferredDate"
+              name="preferredDate"
+              required
+              min={minDate}
+              disabled={isSubmitting}
+              className={`${INPUT_CLASSNAME} [color-scheme:light]`}
+              aria-label="Choose your preferred contact date"
+            />
+            <p className="mt-2 text-xs text-charcoal-light">
+              Choose the date you would like us to get in touch about your quote.
+            </p>
+          </div>
+        )}
 
         <div className="sm:col-span-2">
           <label
@@ -159,7 +242,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             id="services"
             name="services"
             required
-            className="mt-1.5 w-full rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={INPUT_CLASSNAME}
             defaultValue=""
           >
             <option value="" disabled>
@@ -184,7 +268,8 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
             id="message"
             name="message"
             rows={4}
-            className="mt-1.5 w-full resize-y rounded-md border border-sage/20 bg-cream px-4 py-2.5 text-sm text-charcoal transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+            disabled={isSubmitting}
+            className={`${INPUT_CLASSNAME} resize-y`}
             placeholder={
               isQuote
                 ? "Tell us about your business, the support you need, and anything else that will help us prepare your quote..."
@@ -194,11 +279,25 @@ export const ContactForm = ({ variant = "contact" }: ContactFormProps) => {
         </div>
       </div>
 
+      {error && (
+        <p
+          className="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="mt-6 w-full rounded-md bg-gold px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 sm:w-auto"
+        disabled={isSubmitting}
+        className="mt-6 w-full rounded-md bg-gold px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
-        {isQuote ? "Request a Quote" : "Book Your Free Discovery Call"}
+        {isSubmitting
+          ? "Sending..."
+          : isQuote
+            ? "Request a Quote"
+            : "Book Your Free Discovery Call"}
       </button>
     </form>
   );
