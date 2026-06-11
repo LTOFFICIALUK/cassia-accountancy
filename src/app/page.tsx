@@ -84,8 +84,8 @@ const HomePage = () => {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
               <Image
-                src="/images/home-why-us.jpg"
-                alt="Professional consultant providing friendly advice"
+                src="/images/liverpool-city-1.jpeg"
+                alt="Royal Liver Building, Liverpool"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
