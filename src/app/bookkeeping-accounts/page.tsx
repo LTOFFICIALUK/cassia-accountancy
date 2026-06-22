@@ -4,19 +4,22 @@ import { Button } from "@/components/Button";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Bookkeeping & Accounts",
   description:
     "Accurate bookkeeping and financial reporting for sole traders, freelancers and small businesses. Transaction processing, reconciliations and cloud accounting support.",
+  path: "/bookkeeping-accounts",
   keywords: [
     "bookkeeping accountant",
     "small business bookkeeping",
     "cloud accounting support",
     "monthly accounts",
   ],
-};
+});
 
 const BOOKKEEPING_HELP_ITEMS = [
   "Keep your records accurate and up to date",
@@ -28,6 +31,12 @@ const BOOKKEEPING_HELP_ITEMS = [
 const BookkeepingAccountsPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Bookkeeping & Accounts", path: "/bookkeeping-accounts" },
+        ])}
+      />
       <Hero
         headline="Bookkeeping & Accounts"
         subheading="Stay organised with accurate bookkeeping and financial reporting that keeps you in control."

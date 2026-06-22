@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CTASection } from "@/components/CTASection";
+import { JsonLd } from "@/components/JsonLd";
 import { BLOG_CONTENT } from "@/lib/blog-content";
 import { BLOG_POSTS } from "@/lib/constants";
+import {
+  buildArticleStructuredData,
+  createPageMetadata,
+  parseDisplayDateToIso,
+} from "@/lib/seo";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -23,10 +29,16 @@ export const generateMetadata = async ({
     return { title: "Article Not Found" };
   }
 
-  return {
+  const publishedTime = parseDisplayDateToIso(post.date);
+
+  return createPageMetadata({
     title: post.title,
     description: post.excerpt,
-  };
+    path: `/blog/${slug}`,
+    openGraphType: "article",
+    publishedTime,
+    modifiedTime: publishedTime,
+  });
 };
 
 const BlogPostPage = async ({ params }: BlogPostPageProps) => {
@@ -37,8 +49,20 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
     notFound();
   }
 
+  const publishedTime = parseDisplayDateToIso(post.date);
+  const path = `/blog/${slug}`;
+
   return (
     <>
+      <JsonLd
+        data={buildArticleStructuredData({
+          title: post.title,
+          description: post.excerpt,
+          path,
+          category: post.category,
+          publishedTime,
+        })}
+      />
       <section className="bg-sage py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <Link
@@ -53,7 +77,10 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           <h1 className="mt-4 font-heading text-4xl font-semibold text-cream sm:text-5xl">
             {post.title}
           </h1>
-          <time className="mt-4 block text-sm text-cream/70" dateTime={post.date}>
+          <time
+            className="mt-4 block text-sm text-cream/70"
+            dateTime={publishedTime}
+          >
             {post.date}
           </time>
         </div>

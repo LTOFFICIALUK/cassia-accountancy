@@ -4,19 +4,22 @@ import { Button } from "@/components/Button";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Accounts & Compliance",
   description:
     "Year-end accounts, VAT returns, management reporting and ongoing compliance support for small businesses across the UK.",
+  path: "/accounts-compliance",
   keywords: [
     "year-end accounts",
     "VAT returns accountant",
     "management reporting",
     "business compliance",
   ],
-};
+});
 
 const COMPLIANCE_HELP_ITEMS = [
   "Meet filing deadlines with confidence",
@@ -28,6 +31,12 @@ const COMPLIANCE_HELP_ITEMS = [
 const AccountsCompliancePage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Accounts & Compliance", path: "/accounts-compliance" },
+        ])}
+      />
       <Hero
         headline="Accounts & Compliance"
         subheading="Year-end support and ongoing compliance to keep your business on track."

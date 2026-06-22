@@ -3,12 +3,15 @@ import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { CheckList } from "@/components/CheckList";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Services",
   description:
     "Bookkeeping, payroll, Making Tax Digital, self assessment, VAT and compliance services for small businesses across the UK.",
-};
+  path: "/services",
+});
 
 type ServiceSectionProps = {
   id: string;
@@ -61,6 +64,12 @@ const ServiceSection = ({
 const ServicesPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ])}
+      />
       <Hero
         headline="Accountancy Services for Small Businesses"
         subheading="Practical, straightforward support tailored to sole traders, freelancers and growing businesses."

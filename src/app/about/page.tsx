@@ -3,18 +3,27 @@ import Image from "next/image";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FOUNDER_NAME, QUALIFICATIONS } from "@/lib/constants";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
     "Meet Sarah Cassia Davies MAAT — an AAT-qualified accountant passionate about helping small business owners feel confident about their finances.",
-};
+  path: "/about",
+});
 
 const AboutPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       <Hero
         headline={`Meet ${FOUNDER_NAME}`}
         subheading="An AAT-qualified accountant with a passion for helping small business owners feel more confident about their finances."

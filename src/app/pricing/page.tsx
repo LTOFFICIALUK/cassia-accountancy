@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import { CheckList } from "@/components/CheckList";
 import { ContactForm } from "@/components/ContactForm";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/constants";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Get a Quote",
   description:
     "Request a personalised, fixed-fee quote for bookkeeping, tax returns and Making Tax Digital support tailored to your business.",
-};
+  path: "/pricing",
+});
 
 const QUOTE_INCLUDES = [
   "Clear, jargon-free communication",
@@ -23,6 +26,12 @@ const QUOTE_INCLUDES = [
 const PricingPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Get a Quote", path: "/pricing" },
+        ])}
+      />
       <Hero
         headline="Request a Personalised Quote"
         subheading="Every business is different. Tell us what you need and we'll put together a fixed-fee quote with no surprises."

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { JsonLd } from "@/components/JsonLd";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { buildGlobalStructuredData } from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -52,7 +54,12 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     type: "website",
     locale: "en_GB",
+    siteName: SITE_NAME,
   },
+  twitter: {
+    card: "summary_large_image",
+  },
+  category: "Business",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -71,6 +78,7 @@ const RootLayout = ({
   return (
     <html lang="en-GB" className={`${playfair.variable} ${montserrat.variable}`}>
       <body className="flex min-h-screen flex-col antialiased">
+        <JsonLd data={buildGlobalStructuredData()} />
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />

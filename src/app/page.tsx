@@ -1,15 +1,35 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceCard } from "@/components/ServiceCard";
 import { BookkeepingIcon, MTDIcon, TaxIcon } from "@/components/icons";
-import { WHY_CHOOSE_US } from "@/lib/constants";
+import { WHY_CHOOSE_US, SITE_NAME } from "@/lib/constants";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+
+const homeDescription =
+  "Cassia Accountancy helps small business owners with bookkeeping, tax returns, cloud accounting and Making Tax Digital support. Friendly, straightforward accountancy services across the UK.";
+
+export const metadata: Metadata = {
+  ...createPageMetadata({
+    title: "Small Business Accountant UK",
+    description: homeDescription,
+    path: "/",
+  }),
+  title: {
+    absolute: `${SITE_NAME} | Small Business Accountant UK`,
+  },
+};
 
 const HomePage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([{ name: "Home", path: "/" }])}
+      />
       <Hero
         headline="Clear Advice. Better Decisions. Stronger Businesses."
         subheading="Supporting Small Business Owners with Tax Planning, Financial Insight and Efficient Systems That Save Time and Money."

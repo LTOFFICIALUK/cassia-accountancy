@@ -2,18 +2,27 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { BLOG_POSTS } from "@/lib/constants";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Resources",
   description:
     "Helpful articles on Making Tax Digital, bookkeeping, tax returns, VAT and cloud accounting for small businesses.",
-};
+  path: "/blog",
+});
 
 const BlogPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Resources", path: "/blog" },
+        ])}
+      />
       <Hero
         headline="Resources & Insights"
         subheading="Practical guides to help you understand your finances and stay on top of your obligations."

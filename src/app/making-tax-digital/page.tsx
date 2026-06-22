@@ -4,19 +4,22 @@ import { Button } from "@/components/Button";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Making Tax Digital",
   description:
     "Expert Making Tax Digital support for small businesses. MTD readiness reviews, software setup, training and quarterly submissions.",
+  path: "/making-tax-digital",
   keywords: [
     "Making Tax Digital accountant",
     "MTD specialist",
     "MTD for Income Tax",
     "MTD software setup",
   ],
-};
+});
 
 const MTD_HELP_ITEMS = [
   "Understand the requirements",
@@ -28,6 +31,12 @@ const MTD_HELP_ITEMS = [
 const MakingTaxDigitalPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Making Tax Digital", path: "/making-tax-digital" },
+        ])}
+      />
       <Hero
         headline="Making Tax Digital Explained"
         subheading="Expert support to help your business navigate digital tax reporting with confidence."

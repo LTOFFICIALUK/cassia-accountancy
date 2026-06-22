@@ -4,19 +4,22 @@ import { Button } from "@/components/Button";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Self Assessment",
   description:
     "Stress-free self assessment tax returns for sole traders, landlords, freelancers and directors. Accurate submissions and clear advice from Cassia Accountancy.",
+  path: "/self-assessment",
   keywords: [
     "self assessment accountant",
     "tax return accountant",
     "sole trader tax return",
     "landlord tax return",
   ],
-};
+});
 
 const SELF_ASSESSMENT_HELP_ITEMS = [
   "Meet the 31 January deadline with confidence",
@@ -28,6 +31,12 @@ const SELF_ASSESSMENT_HELP_ITEMS = [
 const SelfAssessmentPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Self Assessment", path: "/self-assessment" },
+        ])}
+      />
       <Hero
         headline="Self Assessment Tax Returns"
         subheading="Take the stress out of tax returns with clear, reliable support tailored to your situation."

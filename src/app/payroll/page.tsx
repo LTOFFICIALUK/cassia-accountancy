@@ -4,19 +4,22 @@ import { Button } from "@/components/Button";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Payroll",
   description:
     "Reliable payroll support for small businesses. Payroll processing, PAYE, RTI submissions, pension auto-enrolment and employee payslips.",
+  path: "/payroll",
   keywords: [
     "small business payroll",
     "PAYE accountant",
     "payroll processing",
     "pension auto-enrolment",
   ],
-};
+});
 
 const PAYROLL_HELP_ITEMS = [
   "Pay your team accurately and on time",
@@ -28,6 +31,12 @@ const PAYROLL_HELP_ITEMS = [
 const PayrollPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Payroll", path: "/payroll" },
+        ])}
+      />
       <Hero
         headline="Payroll Services"
         subheading="Reliable payroll support so your team gets paid accurately and on time."

@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { Hero } from "@/components/Hero";
+import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/constants";
+import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Contact",
   description:
     "Get in touch with Cassia Accountancy. Book your free discovery call for bookkeeping, tax and Making Tax Digital support.",
-};
+  path: "/contact",
+});
 
 const ContactPage = () => {
   return (
     <>
+      <JsonLd
+        data={buildPageStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <Hero
         headline="Let's Talk"
         subheading="Whether you're starting a business, struggling with bookkeeping or preparing for Making Tax Digital, we're here to help."

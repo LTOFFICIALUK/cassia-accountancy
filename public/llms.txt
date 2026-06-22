@@ -1,0 +1,44 @@
+# Cassia Accountancy
+
+> UK small business accountancy firm specialising in bookkeeping, tax returns, Making Tax Digital, payroll and compliance.
+
+## About
+
+Cassia Accountancy helps sole traders, freelancers, landlords and small limited companies across the United Kingdom. The practice is led by Sarah Cassia Davies MAAT, an AAT-qualified accountant with over 25 years of experience.
+
+## Services
+
+- Making Tax Digital (MTD readiness, software setup, quarterly submissions)
+- Bookkeeping and accounts
+- Self assessment tax returns
+- Accounts and compliance (year-end accounts, VAT, management reporting)
+- Payroll (PAYE, RTI, pension auto-enrolment)
+
+## Who we help
+
+Sole traders, freelancers, landlords, small limited companies, start-ups, self-employed professionals, service-based businesses and tradespeople.
+
+## Contact
+
+- Website: https://www.cassiaaccountancy.co.uk
+- Email: hello@cassiaaccountancy.co.uk
+- Phone: 0151 314 4530
+- Mobile: +44 7506 428805
+
+## Key pages
+
+- Home: https://www.cassiaaccountancy.co.uk/
+- About: https://www.cassiaaccountancy.co.uk/about
+- Services: https://www.cassiaaccountancy.co.uk/services
+- Making Tax Digital: https://www.cassiaaccountancy.co.uk/making-tax-digital
+- Bookkeeping & Accounts: https://www.cassiaaccountancy.co.uk/bookkeeping-accounts
+- Self Assessment: https://www.cassiaaccountancy.co.uk/self-assessment
+- Accounts & Compliance: https://www.cassiaaccountancy.co.uk/accounts-compliance
+- Payroll: https://www.cassiaaccountancy.co.uk/payroll
+- Get a Quote: https://www.cassiaaccountancy.co.uk/pricing
+- Contact: https://www.cassiaaccountancy.co.uk/contact
+- Resources: https://www.cassiaaccountancy.co.uk/blog
+
+## Sitemap
+
+https://www.cassiaaccountancy.co.uk/sitemap.xml
