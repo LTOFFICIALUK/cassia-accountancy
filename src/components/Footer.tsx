@@ -64,6 +64,18 @@ export const Footer = () => {
           <p>
             &copy; {currentYear} {SITE_NAME}. All rights reserved.
           </p>
+          <p className="mt-2">
+            Website built by{" "}
+            <a
+              href="https://www.linkedin.com/in/luke-carter-developer/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline transition-colors hover:text-sage"
+            >
+              Luke Carter
+            </a>
+            .
+          </p>
         </div>
       </div>
     </footer>
