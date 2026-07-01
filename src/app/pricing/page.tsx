@@ -5,6 +5,7 @@ import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/constants";
+import { IMAGES } from "@/lib/images";
 import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -12,6 +13,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Request a personalised, fixed-fee quote for bookkeeping, tax returns and Making Tax Digital support tailored to your business.",
   path: "/pricing",
+  ogImage: IMAGES.og.pricing,
 });
 
 const QUOTE_INCLUDES = [
@@ -37,7 +39,7 @@ const PricingPage = () => {
         subheading="Every business is different. Tell us what you need and we'll put together a fixed-fee quote with no surprises."
         ctaText="Request a Quote"
         ctaHref="#quote-form"
-        imageSrc="/images/pricing-hero.jpg"
+        image={IMAGES.hero.pricing}
         compact
       />
 

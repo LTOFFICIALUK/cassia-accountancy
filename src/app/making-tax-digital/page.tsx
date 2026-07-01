@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Button } from "@/components/Button";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildServiceStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Making Tax Digital",
@@ -19,6 +20,7 @@ export const metadata: Metadata = createPageMetadata({
     "MTD for Income Tax",
     "MTD software setup",
   ],
+  ogImage: IMAGES.og.mtd,
 });
 
 const MTD_HELP_ITEMS = [
@@ -32,17 +34,23 @@ const MakingTaxDigitalPage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
-          { name: "Home", path: "/" },
-          { name: "Making Tax Digital", path: "/making-tax-digital" },
-        ])}
+        data={buildServiceStructuredData({
+          name: "Making Tax Digital Support",
+          description:
+            "Expert Making Tax Digital support for small businesses. MTD readiness reviews, software setup, training and quarterly submissions.",
+          path: "/making-tax-digital",
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Making Tax Digital", path: "/making-tax-digital" },
+          ],
+        })}
       />
       <Hero
         headline="Making Tax Digital Explained"
         subheading="Expert support to help your business navigate digital tax reporting with confidence."
         ctaText="Book a Free MTD Consultation"
         ctaHref="/contact"
-        imageSrc="/images/hmrc-letter.jpeg"
+        image={IMAGES.hero.mtd}
         compact
       />
 
@@ -66,15 +74,12 @@ const MakingTaxDigitalPage = () => {
                 staying compliant and avoiding penalties.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white shadow-lg">
-              <Image
-                src="/images/making-tax-digital.jpg"
-                alt="Making Tax Digital official branding"
-                fill
-                className="object-contain p-6"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage
+              image={IMAGES.content.mtdBranding}
+              objectFit="contain"
+              padded
+              className="bg-white"
+            />
           </div>
         </div>
       </section>

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Button } from "@/components/Button";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildServiceStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Bookkeeping & Accounts",
@@ -19,6 +20,7 @@ export const metadata: Metadata = createPageMetadata({
     "cloud accounting support",
     "monthly accounts",
   ],
+  ogImage: IMAGES.og.bookkeeping,
 });
 
 const BOOKKEEPING_HELP_ITEMS = [
@@ -32,17 +34,23 @@ const BookkeepingAccountsPage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
-          { name: "Home", path: "/" },
-          { name: "Bookkeeping & Accounts", path: "/bookkeeping-accounts" },
-        ])}
+        data={buildServiceStructuredData({
+          name: "Bookkeeping & Accounts",
+          description:
+            "Accurate bookkeeping and financial reporting for sole traders, freelancers and small businesses. Transaction processing, reconciliations and cloud accounting support.",
+          path: "/bookkeeping-accounts",
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Bookkeeping & Accounts", path: "/bookkeeping-accounts" },
+          ],
+        })}
       />
       <Hero
         headline="Bookkeeping & Accounts"
         subheading="Stay organised with accurate bookkeeping and financial reporting that keeps you in control."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/plants.jpeg"
+        image={IMAGES.hero.bookkeeping}
         compact
       />
 
@@ -65,15 +73,7 @@ const BookkeepingAccountsPage = () => {
                 errors and makes tax deadlines far less stressful.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/dubai-view.jpeg"
-                alt="Modern city skyline representing business growth and financial clarity"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.bookkeepingGrowth} />
           </div>
         </div>
       </section>

@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FOUNDER_NAME, QUALIFICATIONS } from "@/lib/constants";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildAboutStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
     "Meet Sarah Cassia Davies MAAT — an AAT-qualified accountant passionate about helping small business owners feel confident about their finances.",
   path: "/about",
+  ogImage: IMAGES.og.about,
 });
 
 const AboutPage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
+        data={buildAboutStructuredData([
           { name: "Home", path: "/" },
           { name: "About", path: "/about" },
         ])}
@@ -29,22 +31,18 @@ const AboutPage = () => {
         subheading="An AAT-qualified accountant with a passion for helping small business owners feel more confident about their finances."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/about-hero.jpg"
+        image={IMAGES.hero.about}
         compact
       />
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-start gap-12 lg:grid-cols-2">
-            <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-xl shadow-lg lg:mx-auto">
-              <Image
-                src="/images/sarah.jpeg"
-                alt="Sarah Cassia Davies, founder of Cassia Accountancy"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 400px"
-              />
-            </div>
+            <ContentImage
+              image={IMAGES.content.founderPortrait}
+              aspectRatio="3/4"
+              className="w-full max-w-md lg:mx-auto"
+            />
 
             <div>
               <SectionHeading title="Your Partner in Financial Clarity" centered={false} />

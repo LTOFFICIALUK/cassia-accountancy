@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/constants";
-import { buildGlobalStructuredData } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, buildGlobalStructuredData } from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -55,9 +55,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     siteName: SITE_NAME,
+    url: SITE_URL,
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE.src,
+        width: DEFAULT_OG_IMAGE.width,
+        height: DEFAULT_OG_IMAGE.height,
+        alt: DEFAULT_OG_IMAGE.alt,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE.src],
   },
   category: "Business",
   icons: {

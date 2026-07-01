@@ -7,8 +7,9 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/lib/constants";
+import { IMAGES, type SiteImage } from "@/lib/images";
 
-export const OG_IMAGE = "/images/lion.jpeg";
+export const DEFAULT_OG_IMAGE = IMAGES.og.default;
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 
@@ -17,7 +18,7 @@ type CreatePageMetadataOptions = {
   description: string;
   path: string;
   keywords?: string[];
-  ogImage?: string;
+  ogImage?: SiteImage;
   openGraphType?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
@@ -40,7 +41,7 @@ export const createPageMetadata = ({
   description,
   path,
   keywords,
-  ogImage = OG_IMAGE,
+  ogImage = DEFAULT_OG_IMAGE,
   openGraphType = "website",
   publishedTime,
   modifiedTime,
@@ -67,10 +68,10 @@ export const createPageMetadata = ({
       type: openGraphType,
       images: [
         {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: SITE_NAME,
+          url: ogImage.src,
+          width: ogImage.width,
+          height: ogImage.height,
+          alt: ogImage.alt,
         },
       ],
       ...(openGraphType === "article" && publishedTime
@@ -85,7 +86,7 @@ export const createPageMetadata = ({
       card: "summary_large_image",
       title: openGraphTitle,
       description,
-      images: [ogImage],
+      images: [ogImage.src],
     },
   };
 };
@@ -113,8 +114,8 @@ export const buildGlobalStructuredData = () => ({
       "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: SITE_URL,
-      logo: buildAbsoluteUrl("/logo.png"),
-      image: buildAbsoluteUrl(OG_IMAGE),
+      logo: buildAbsoluteUrl(IMAGES.logo.default.src),
+      image: buildAbsoluteUrl(DEFAULT_OG_IMAGE.src),
       description: SITE_DESCRIPTION,
       founder: {
         "@type": "Person",
@@ -164,6 +165,7 @@ type ArticleStructuredDataOptions = {
   category: string;
   publishedTime: string;
   modifiedTime?: string;
+  image: SiteImage;
 };
 
 export const buildArticleStructuredData = ({
@@ -173,6 +175,7 @@ export const buildArticleStructuredData = ({
   category,
   publishedTime,
   modifiedTime,
+  image,
 }: ArticleStructuredDataOptions) => ({
   "@context": "https://schema.org",
   "@graph": [
@@ -185,6 +188,7 @@ export const buildArticleStructuredData = ({
       "@type": "Article",
       headline: title,
       description,
+      image: buildAbsoluteUrl(image.src),
       datePublished: publishedTime,
       dateModified: modifiedTime ?? publishedTime,
       author: {
@@ -207,4 +211,52 @@ export const buildArticleStructuredData = ({
 export const buildPageStructuredData = (items: BreadcrumbItem[]) => ({
   "@context": "https://schema.org",
   ...buildBreadcrumbJsonLd(items),
+});
+
+type ServiceStructuredDataOptions = {
+  name: string;
+  description: string;
+  path: string;
+  breadcrumbs: BreadcrumbItem[];
+};
+
+export const buildServiceStructuredData = ({
+  name,
+  description,
+  path,
+  breadcrumbs,
+}: ServiceStructuredDataOptions) => ({
+  "@context": "https://schema.org",
+  "@graph": [
+    buildBreadcrumbJsonLd(breadcrumbs),
+    {
+      "@type": "Service",
+      name,
+      description,
+      url: buildAbsoluteUrl(path),
+      provider: {
+        "@id": ORGANIZATION_ID,
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "United Kingdom",
+      },
+    },
+  ],
+});
+
+export const buildAboutStructuredData = (breadcrumbs: BreadcrumbItem[]) => ({
+  "@context": "https://schema.org",
+  "@graph": [
+    buildBreadcrumbJsonLd(breadcrumbs),
+    {
+      "@type": "Person",
+      name: FOUNDER_NAME,
+      jobTitle: "AAT-qualified Accountant",
+      worksFor: {
+        "@id": ORGANIZATION_ID,
+      },
+      url: buildAbsoluteUrl("/about"),
+    },
+  ],
 });

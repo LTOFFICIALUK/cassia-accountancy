@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Button } from "@/components/Button";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildServiceStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Self Assessment",
@@ -19,6 +20,7 @@ export const metadata: Metadata = createPageMetadata({
     "sole trader tax return",
     "landlord tax return",
   ],
+  ogImage: IMAGES.og.selfAssessment,
 });
 
 const SELF_ASSESSMENT_HELP_ITEMS = [
@@ -32,17 +34,23 @@ const SelfAssessmentPage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
-          { name: "Home", path: "/" },
-          { name: "Self Assessment", path: "/self-assessment" },
-        ])}
+        data={buildServiceStructuredData({
+          name: "Self Assessment Tax Returns",
+          description:
+            "Stress-free self assessment tax returns for sole traders, landlords, freelancers and directors. Accurate submissions and clear advice from Cassia Accountancy.",
+          path: "/self-assessment",
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Self Assessment", path: "/self-assessment" },
+          ],
+        })}
       />
       <Hero
         headline="Self Assessment Tax Returns"
         subheading="Take the stress out of tax returns with clear, reliable support tailored to your situation."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/hmrc-letter.jpeg"
+        image={IMAGES.hero.selfAssessment}
         compact
       />
 
@@ -66,15 +74,7 @@ const SelfAssessmentPage = () => {
                 and understand what you owe.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/mtd-content.jpg"
-                alt="Laptop displaying a digital tax management dashboard"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.selfAssessmentDashboard} />
           </div>
         </div>
       </section>

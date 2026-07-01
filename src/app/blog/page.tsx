@@ -5,13 +5,15 @@ import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { BLOG_POSTS } from "@/lib/constants";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildPageStructuredData, createPageMetadata, parseDisplayDateToIso } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Resources",
   description:
     "Helpful articles on Making Tax Digital, bookkeeping, tax returns, VAT and cloud accounting for small businesses.",
   path: "/blog",
+  ogImage: IMAGES.og.blog,
 });
 
 const BlogPage = () => {
@@ -28,7 +30,7 @@ const BlogPage = () => {
         subheading="Practical guides to help you understand your finances and stay on top of your obligations."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/blog-hero.jpg"
+        image={IMAGES.hero.blog}
         compact
       />
 
@@ -54,7 +56,10 @@ const BlogPage = () => {
                   {post.excerpt}
                 </p>
                 <div className="mt-4 flex items-center justify-between">
-                  <time className="text-xs text-charcoal-light" dateTime={post.date}>
+                  <time
+                    className="text-xs text-charcoal-light"
+                    dateTime={parseDisplayDateToIso(post.date)}
+                  >
                     {post.date}
                   </time>
                   <Link

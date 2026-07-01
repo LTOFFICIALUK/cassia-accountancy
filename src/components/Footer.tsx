@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
-import { CONTACT_EMAIL, CONTACT_PHONE, NAV_LINKS, SITE_NAME } from "@/lib/constants";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  NAV_LINKS,
+  SERVICE_LINKS,
+  SITE_NAME,
+} from "@/lib/constants";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,8 +14,8 @@ export const Footer = () => {
   return (
     <footer className="border-t border-sage/10 bg-white py-12 sm:py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Logo variant="header" />
             <p className="mt-4 text-sm leading-relaxed text-charcoal-light">
               Helping small business owners stay organised, compliant and ready
@@ -23,6 +29,24 @@ export const Footer = () => {
             </p>
             <ul className="mt-4 space-y-2">
               {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-charcoal transition-colors hover:text-sage"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-gold">
+              Services
+            </p>
+            <ul className="mt-4 space-y-2">
+              {SERVICE_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

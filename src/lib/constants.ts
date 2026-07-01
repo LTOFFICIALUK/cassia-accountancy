@@ -17,6 +17,15 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+/** Deep links to individual service pages — used for internal linking and SEO. */
+export const SERVICE_LINKS = [
+  { href: "/making-tax-digital", label: "Making Tax Digital" },
+  { href: "/bookkeeping-accounts", label: "Bookkeeping & Accounts" },
+  { href: "/self-assessment", label: "Self Assessment" },
+  { href: "/accounts-compliance", label: "Accounts & Compliance" },
+  { href: "/payroll", label: "Payroll" },
+] as const;
+
 export const WHY_CHOOSE_US = [
   "Friendly, approachable service",
   "Clear communication without jargon",

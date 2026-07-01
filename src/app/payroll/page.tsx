@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Button } from "@/components/Button";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildServiceStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Payroll",
@@ -19,6 +20,7 @@ export const metadata: Metadata = createPageMetadata({
     "payroll processing",
     "pension auto-enrolment",
   ],
+  ogImage: IMAGES.og.payroll,
 });
 
 const PAYROLL_HELP_ITEMS = [
@@ -32,17 +34,23 @@ const PayrollPage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
-          { name: "Home", path: "/" },
-          { name: "Payroll", path: "/payroll" },
-        ])}
+        data={buildServiceStructuredData({
+          name: "Payroll Services",
+          description:
+            "Reliable payroll support for small businesses. Payroll processing, PAYE, RTI submissions, pension auto-enrolment and employee payslips.",
+          path: "/payroll",
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Payroll", path: "/payroll" },
+          ],
+        })}
       />
       <Hero
         headline="Payroll Services"
         subheading="Reliable payroll support so your team gets paid accurately and on time."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/sarah.jpeg"
+        image={IMAGES.hero.payroll}
         compact
       />
 
@@ -66,15 +74,7 @@ const PayrollPage = () => {
                 compliant.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/plants.jpeg"
-                alt="Office plants representing a calm, organised workplace"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.payrollWorkplace} />
           </div>
         </div>
       </section>

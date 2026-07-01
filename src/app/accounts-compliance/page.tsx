@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Button } from "@/components/Button";
+import { ContentImage } from "@/components/ContentImage";
 import { CheckList } from "@/components/CheckList";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
-import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
+import { buildServiceStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Accounts & Compliance",
@@ -19,6 +20,7 @@ export const metadata: Metadata = createPageMetadata({
     "management reporting",
     "business compliance",
   ],
+  ogImage: IMAGES.og.compliance,
 });
 
 const COMPLIANCE_HELP_ITEMS = [
@@ -32,17 +34,23 @@ const AccountsCompliancePage = () => {
   return (
     <>
       <JsonLd
-        data={buildPageStructuredData([
-          { name: "Home", path: "/" },
-          { name: "Accounts & Compliance", path: "/accounts-compliance" },
-        ])}
+        data={buildServiceStructuredData({
+          name: "Accounts & Compliance",
+          description:
+            "Year-end accounts, VAT returns, management reporting and ongoing compliance support for small businesses across the UK.",
+          path: "/accounts-compliance",
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Accounts & Compliance", path: "/accounts-compliance" },
+          ],
+        })}
       />
       <Hero
         headline="Accounts & Compliance"
         subheading="Year-end support and ongoing compliance to keep your business on track."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/hmrc-letter.jpeg"
+        image={IMAGES.hero.compliance}
         compact
       />
 
@@ -66,15 +74,7 @@ const AccountsCompliancePage = () => {
                 have the financial insight you need to make good decisions.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/liverpool-city.jpeg"
-                alt="Liverpool city skyline representing local business support"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.complianceLocal} />
           </div>
         </div>
       </section>

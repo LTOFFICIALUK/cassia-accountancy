@@ -5,12 +5,14 @@ import { Hero } from "@/components/Hero";
 import { CheckList } from "@/components/CheckList";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
+import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Services",
   description:
     "Bookkeeping, payroll, Making Tax Digital, self assessment, VAT and compliance services for small businesses across the UK.",
   path: "/services",
+  ogImage: IMAGES.og.services,
 });
 
 type ServiceSectionProps = {
@@ -75,7 +77,7 @@ const ServicesPage = () => {
         subheading="Practical, straightforward support tailored to sole traders, freelancers and growing businesses."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/services-hero.jpg"
+        image={IMAGES.hero.services}
         compact
       />
 

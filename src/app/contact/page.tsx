@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/constants";
+import { IMAGES } from "@/lib/images";
 import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -11,6 +12,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Get in touch with Cassia Accountancy. Book your free discovery call for bookkeeping, tax and Making Tax Digital support.",
   path: "/contact",
+  ogImage: IMAGES.og.contact,
 });
 
 const ContactPage = () => {
@@ -26,7 +28,7 @@ const ContactPage = () => {
         headline="Let's Talk"
         subheading="Whether you're starting a business, struggling with bookkeeping or preparing for Making Tax Digital, we're here to help."
         ctaText=""
-        imageSrc="/images/contact-hero.jpg"
+        image={IMAGES.hero.contact}
         compact
       />
 

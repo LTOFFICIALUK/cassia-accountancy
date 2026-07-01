@@ -5,6 +5,7 @@ import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/JsonLd";
 import { BLOG_CONTENT } from "@/lib/blog-content";
 import { BLOG_POSTS } from "@/lib/constants";
+import { getBlogPostImage, getBlogPostOgImage } from "@/lib/images";
 import {
   buildArticleStructuredData,
   createPageMetadata,
@@ -38,6 +39,7 @@ export const generateMetadata = async ({
     openGraphType: "article",
     publishedTime,
     modifiedTime: publishedTime,
+    ogImage: getBlogPostOgImage(slug),
   });
 };
 
@@ -61,6 +63,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
           path,
           category: post.category,
           publishedTime,
+          image: getBlogPostImage(slug),
         })}
       />
       <section className="bg-sage py-16 sm:py-20">

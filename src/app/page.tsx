@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { CheckList } from "@/components/CheckList";
+import { ContentImage } from "@/components/ContentImage";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { JsonLd } from "@/components/JsonLd";
@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceCard } from "@/components/ServiceCard";
 import { BookkeepingIcon, MTDIcon, TaxIcon } from "@/components/icons";
 import { WHY_CHOOSE_US, SITE_NAME } from "@/lib/constants";
+import { IMAGES } from "@/lib/images";
 import { buildPageStructuredData, createPageMetadata } from "@/lib/seo";
 
 const homeDescription =
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     title: "Small Business Accountant UK",
     description: homeDescription,
     path: "/",
+    ogImage: IMAGES.og.default,
   }),
   title: {
     absolute: `${SITE_NAME} | Small Business Accountant UK`,
@@ -35,7 +37,7 @@ const HomePage = () => {
         subheading="Supporting Small Business Owners with Tax Planning, Financial Insight and Efficient Systems That Save Time and Money."
         ctaText="Book a Free Discovery Call"
         ctaHref="/contact"
-        imageSrc="/images/lion.jpeg"
+        image={IMAGES.hero.home}
         imagePosition="object-[80%_center]"
       />
 
@@ -57,15 +59,7 @@ const HomePage = () => {
                 with confidence.
               </p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/hmrc-letter.jpeg"
-                alt="HM Revenue and Customs letter representing tax and compliance paperwork"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.homeIntro} />
           </div>
         </div>
       </section>
@@ -102,15 +96,7 @@ const HomePage = () => {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-              <Image
-                src="/images/liverpool-city-1.jpeg"
-                alt="Royal Liver Building, Liverpool"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <ContentImage image={IMAGES.content.homeWhyUs} />
             <div>
               <SectionHeading title="Why Work With Us" centered={false} />
               <div className="mt-6">

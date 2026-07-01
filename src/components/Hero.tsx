@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { SiteImage } from "@/lib/images";
 import { Button } from "@/components/Button";
 
 type HeroProps = {
@@ -6,7 +7,7 @@ type HeroProps = {
   subheading: string;
   ctaText?: string | null;
   ctaHref?: string;
-  imageSrc?: string;
+  image: SiteImage;
   imagePosition?: string;
   compact?: boolean;
 };
@@ -16,7 +17,7 @@ export const Hero = ({
   subheading,
   ctaText = "Book a Free Discovery Call",
   ctaHref = "/contact",
-  imageSrc = "/images/hero-default.jpg",
+  image,
   imagePosition = "object-center",
   compact = false,
 }: HeroProps) => {
@@ -26,8 +27,8 @@ export const Hero = ({
     >
       <div className="absolute inset-0 opacity-20">
         <Image
-          src={imageSrc}
-          alt=""
+          src={image.src}
+          alt={image.alt}
           fill
           className={`object-cover ${imagePosition}`}
           priority
